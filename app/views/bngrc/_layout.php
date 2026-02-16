@@ -14,18 +14,18 @@ $title = $title ?? 'BNGRC';
 		<div class="header">
 			<h1>BNGRC - Suivi Collectes / Distributions</h1>
 			<p>
-				<a href="/dashboard">Template HTML</a>
-				|
+				
+				
 				<a href="/bngrc/dashboard">Dashboard dynamique</a>
-				|
+				
 				<a href="/besoins">Besoins</a>
-				|
+				
 				<a href="/dons">Dons</a>
-				|
+				
 				<a href="/regions">Régions</a>
-				|
+				
 				<a href="/villes">Villes</a>
-				|
+				
 				<a href="/articles">Articles</a>
 			</p>
 		</div>
