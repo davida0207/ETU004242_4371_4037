@@ -10,11 +10,18 @@ class RegionController
 {
 	public function index(): void
 	{
-		$model = new RegionModel(Flight::db());
-		$regions = $model->listAll();
+		$regions = [];
+		$error = null;
+		try {
+			$model = new RegionModel(Flight::db());
+			$regions = $model->listAll();
+		} catch (\Throwable $e) {
+			$error = $e->getMessage();
+		}
 		Flight::render('bngrc/regions/index', [
 			'regions' => $regions,
 			'flash' => Flight::request()->query['flash'] ?? null,
+			'error' => $error,
 		]);
 	}
 

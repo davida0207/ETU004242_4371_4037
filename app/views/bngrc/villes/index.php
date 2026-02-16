@@ -3,6 +3,7 @@ $title = 'Villes';
 ob_start();
 
 $flash = $flash ?? null;
+$error = $error ?? null;
 $flashMap = [
 	'created' => ['ok', 'Ville créée.'],
 	'updated' => ['ok', 'Ville modifiée.'],
@@ -11,6 +12,12 @@ $flashMap = [
 ];
 $filters = $filters ?? ['region_id' => null];
 ?>
+
+<?php if (!empty($error)): ?>
+	<div class="flash flash-warn">
+		<?= htmlspecialchars((string)$error) ?>
+	</div>
+<?php endif; ?>
 
 <?php if ($flash && isset($flashMap[$flash])): ?>
 	<div class="flash <?= $flashMap[$flash][0] === 'warn' ? 'flash-warn' : '' ?>">

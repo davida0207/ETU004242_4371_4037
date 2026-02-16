@@ -3,6 +3,7 @@
 namespace app\models;
 
 use PDO;
+use RuntimeException;
 
 class BngrcDashboardModel
 {
@@ -30,6 +31,10 @@ class BngrcDashboardModel
 			GROUP BY r.nom, v.id, v.nom
 			ORDER BY r.nom ASC, v.nom ASC
 		');
+		if ($st === false) {
+			$err = $this->db->errorInfo();
+			throw new RuntimeException('Query failed: ' . (string)($err[2] ?? 'unknown error'));
+		}
 		return $st->fetchAll(PDO::FETCH_ASSOC);
 	}
 }

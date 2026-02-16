@@ -21,37 +21,12 @@ use flight\net\Router;
 // This wraps all routes in the group with the SecurityHeadersMiddleware
 $router->group('', function(Router $router) use ($app) {
 
-// 	$router->get('/', function() use ($app) {
-//     $controller = new ApiExampleController($app);
-//     $products = $controller->getProduct();
-
-//     $app->render('accueil', ['products' => $products]);
-// });
-
-// $router->get('/produit/@id', function($id) use ($app) {
-//     $controller = new ProductController($app);
-//     $product = $controller->getProductById($id);
-    
-//     if(!$product) {
-//         $app->notFound();
-//         return;
-//     }   
-//     $app->render('produit', ['product' => $product]);
-// });
-
 $Welcome_Controller = new WelcomeController();
 
 // Landing page -> go to the real (dynamic) BNGRC dashboard
 $router->get('/', function() {
 	Flight::redirect('/bngrc/dashboard');
 });
-
-// BNGRC dashboard page based on the provided HTML template (served as-is from app/views)
-$router->get('/dashboard', function() {
-	Flight::render('tableau-bord-bngrc');
-});
-
-// BNGRC MVC routes (todolist.yml)
 $bngrcDashboard = new BngrcDashboardController();
 $bngrcRegions = new BngrcRegionController();
 $bngrcVilles = new BngrcVilleController();
@@ -97,53 +72,7 @@ $router->get('/dons/@id:[0-9]+', [$bngrcDons, 'show']);
 $router->get('/dons/@id:[0-9]+/edit', [$bngrcDons, 'editForm']);
 $router->post('/dons/@id:[0-9]+/edit', [$bngrcDons, 'editPost']);
 $router->post('/dons/@id:[0-9]+/delete', [$bngrcDons, 'deletePost']);
-// $router->get('/produit/@id', [$Welcome_Controller, 'homeById']);
- $router->get('/message', [$Welcome_Controller,'messages']);
- $router->get('/inscription', function() { Flight::redirect('/register'); });
- $router->get('/logout', [$Welcome_Controller,'logout']);
 
- $router->get('/register', ['AuthController', 'showRegister']);
- $router->post('/register', ['AuthController', 'postRegister']);
- $router->post('/login', ['AuthController', 'postLogin']);
- $router->post('/api/validate/register', ['AuthController', 'validateRegisterAjax']);
-
- $router->post('/api/messages/send', ['MessageApiController', 'send']);
- $router->get('/api/messages/conversations', ['MessageApiController', 'conversations']);
- $router->get('/api/messages/@conversationId', ['MessageApiController', 'list']);
-
- $router->get('/api/users', ['UserApiController', 'list']);
-
-// Serve static-like view HTML files from app/views (e.g. /forms.html -> app/views/forms.html)
-$router->get('/@name.html', function($name) use ($app) {
-	$path = __DIR__ . $app->get('ds') . '..' . $app->get('ds') . 'views' . $app->get('ds') . $name . '.html';
-	// Fallback if $app->get('ds') isn't set
-	if (!file_exists($path)) {
-		$path = __DIR__ . '/../views/' . $name . '.html';
-	}
-	if (file_exists($path)) {
-		header('Content-Type: text/html; charset=utf-8');
-		echo file_get_contents($path);
-		return;
-	}
-	$app->notFound();
-});
-//  $router->get('/nouv', [$Welcome_Controller, 'pageCreate']);
-//  $router->get('/benef', [$Welcome_Controller, 'benefice']);
-// // $router->post('/modif/change/@id', [$Welcome_Controller, 'update']);
-//  $router->get('/suppr/@id', [$Welcome_Controller, 'annuler']);
-
-//  $router->get('/valide/@id', [$Welcome_Controller, 'validate']);
-
-
-	// $router->get('/hello-world/@name', function($name) {
-	// 	echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
-	// });
-
-	// $router->group('/api', function() use ($router) {
-	// 	$router->get('/users', [ ApiExampleController::class, 'getUsers' ]);
-	// 	$router->get('/users/@id:[0-9]', [ ApiExampleController::class, 'getUser' ]);
-	// 	$router->post('/users/@id:[0-9]', [ ApiExampleController::class, 'updateUser' ]);
-	// });
 
 	
 }, [ SecurityHeadersMiddleware::class ]);

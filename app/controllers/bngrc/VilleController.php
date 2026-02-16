@@ -13,15 +13,24 @@ class VilleController
 	{
 		$regionIdRaw = Flight::request()->query['region_id'] ?? null;
 		$regionId = $regionIdRaw !== null && $regionIdRaw !== '' ? (int)$regionIdRaw : null;
-
-		$regionModel = new RegionModel(Flight::db());
-		$villeModel = new VilleModel(Flight::db());
+		$villes = [];
+		$regions = [];
+		$error = null;
+		try {
+			$regionModel = new RegionModel(Flight::db());
+			$villeModel = new VilleModel(Flight::db());
+			$villes = $villeModel->listAll($regionId);
+			$regions = $regionModel->listAll();
+		} catch (\Throwable $e) {
+			$error = $e->getMessage();
+		}
 
 		Flight::render('bngrc/villes/index', [
-			'villes' => $villeModel->listAll($regionId),
-			'regions' => $regionModel->listAll(),
+			'villes' => $villes,
+			'regions' => $regions,
 			'filters' => ['region_id' => $regionId],
 			'flash' => Flight::request()->query['flash'] ?? null,
+			'error' => $error,
 		]);
 	}
 

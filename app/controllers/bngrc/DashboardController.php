@@ -9,8 +9,15 @@ class DashboardController
 {
 	public function index(): void
 	{
-		$model = new BngrcDashboardModel(Flight::db());
-		$rows = $model->citySummary();
+		$rows = [];
+		$error = null;
+		try {
+			$model = new BngrcDashboardModel(Flight::db());
+			$rows = $model->citySummary();
+		} catch (\Throwable $e) {
+			// Render the dashboard anyway (with 0 values) so the UI isn't blank.
+			$error = $e->getMessage();
+		}
 
 		$totBesoins = 0.0;
 		$totAttribue = 0.0;
@@ -39,6 +46,7 @@ class DashboardController
 				'villes_total' => count($rows),
 			],
 			'rows' => $rows,
+			'error' => $error,
 		]);
 	}
 }
