@@ -328,3 +328,4 @@
         .error { color: #d32f2f; font-size: 0.9em; margin-top: 6px; }
         .flash { padding: 12px; border-radius: 10px; background: #e8f5e9; color: #388e3c; margin-bottom: 15px; }
         .flash-warn { background: #fff3e0; color: #f57c00; }
+</style>

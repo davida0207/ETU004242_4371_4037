@@ -61,9 +61,14 @@ use Tracy\Debugger;
  *
  * For more options, see https://tracy.nette.org/en/configuration
  **********************************************/
-Debugger::enable(); // Auto-detects environment
-// Debugger::enable(Debugger::Development); // Explicitly set environment
-// Debugger::enable('23.75.345.200'); // Restrict debug bar to specific IPs
+// Force full error reporting and display for development so errors are visible in the browser.
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+// Enable Tracy in explicit Development mode to show full error pages and debug bar.
+Debugger::enable(Debugger::Development);
+Debugger::$showBar = true; // ensure the Tracy debug bar is visible in non-cli modes
 Debugger::$logDirectory = __DIR__ . $ds . '..' . $ds . 'log'; // Log directory
 Debugger::$strictMode = true; // Show all errors (set to E_ALL & ~E_DEPRECATED for less noise)
 // Debugger::$maxLen = 1000; // Max length of dumped variables (default: 150)
