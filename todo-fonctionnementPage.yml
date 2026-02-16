@@ -1,0 +1,170 @@
+
+projet: Suivi-Collectes-Distributions-BNGRC
+description: Fonctionnement complet des pages de l'application
+
+pages:
+
+  - page: index.php
+    role: Dashboard principal
+    fonctionnement: Vue globale avec statistiques et résumé des villes
+    contenu:
+      - Cards statistiques:
+          - Besoins totaux (valeur + quantité)
+          - Dons reçus (total)
+          - Dons attribués
+          - Villes assistées
+      - Tableau des villes:
+          - Ville
+          - Région
+          - Total besoins
+          - Total attribué
+          - Reste
+          - Bouton "Détails"
+      - Barre de recherche (nom ville)
+      - Tri (reste, besoins, ordre alphabétique)
+
+  - page: Region.php
+    role: Gestion des régions
+    fonctionnement: CRUD des régions
+    contenu:
+      - Liste des régions
+      - Boutons:
+          - Ajouter région
+          - Modifier région
+          - Supprimer région (avec vérification si villes liées)
+
+  - page: Ville.php
+    role: Gestion des villes
+    fonctionnement: CRUD des villes avec lien vers régions
+    contenu:
+      - Liste des villes:
+          - Nom ville
+          - Région associée
+          - Résumé besoins (optionnel)
+      - Boutons:
+          - Ajouter ville (sélection région obligatoire)
+          - Modifier ville
+          - Supprimer ville (bloquer si besoins existants)
+
+  - page: Article.php
+    role: Gestion des articles (ressources)
+    fonctionnement: CRUD des articles par catégorie
+    contenu:
+      - Liste des articles:
+          - Nom
+          - Catégorie (Nature, Matériaux, Argent)
+          - Unité
+          - Prix unitaire
+      - Boutons:
+          - Ajouter article
+          - Modifier article
+          - Supprimer ou Désactiver article
+
+  - page: Besoin.php
+    role: Gestion des besoins
+    fonctionnement: Liste et suivi des besoins par ville
+    contenu:
+      - Tableau:
+          - Ville
+          - Article
+          - Catégorie
+          - Quantité
+          - Prix unitaire
+          - Valeur totale
+          - Couvert
+          - Reste
+          - Date
+      - Filtres:
+          - Région
+          - Ville
+          - Catégorie
+          - Article
+          - Date
+      - Boutons:
+          - Ajouter besoin
+          - Modifier besoin
+          - Supprimer besoin
+          - Voir détail
+
+  - page: Besoin_add.php
+    role: Ajout d'un besoin
+    fonctionnement: Formulaire de création de besoin
+    contenu:
+      - Sélection ville (obligatoire)
+      - Sélection article (obligatoire)
+      - Quantité (>0)
+      - Date besoin
+      - Note/commentaire
+      - Bouton enregistrer
+
+  - page: Besoin_detail.php
+    role: Détail d'un besoin
+    fonctionnement: Afficher état du besoin et allocations reçues
+    contenu:
+      - Informations besoin
+      - Liste des allocations:
+          - Don
+          - Date don
+          - Quantité attribuée
+          - Dispatch run
+      - Résumé:
+          - Total couvert
+          - Reste à couvrir
+
+  - page: Don.php
+    role: Gestion des dons
+    fonctionnement: Liste et suivi des dons
+    contenu:
+      - Tableau:
+          - Article
+          - Catégorie
+          - Quantité
+          - Date don
+          - Quantité restante
+          - Statut (non traité, partiel, traité)
+      - Filtres:
+          - Catégorie
+          - Article
+          - Date
+      - Boutons:
+          - Ajouter don
+          - Voir détail
+          - Modifier/Supprimer (si non dispatché)
+
+  - page: Don_add.php
+    role: Ajout d'un don
+    fonctionnement: Formulaire de création d'un don
+    contenu:
+      - Sélection article
+      - Quantité (>0)
+      - Date don
+      - Donateur/source (optionnel)
+      - Note
+      - Bouton enregistrer
+
+  - page: Don_detail.php
+    role: Détail d'un don
+    fonctionnement: Voir répartition d'un don
+    contenu:
+      - Informations don
+      - Liste des allocations:
+          - Ville
+          - Besoin
+          - Quantité attribuée
+          - Date
+      - Résumé:
+          - Total attribué
+          - Quantité restante
+
+  - page: Ville_detail.php
+    role: Dashboard par ville
+    fonctionnement: Vue détaillée des besoins et aides d'une ville
+    contenu:
+      - Informations ville + région
+      - Liste des besoins
+      - Liste des dons attribués
+      - Totaux:
+          - Besoin total
+          - Attribué
+          - Reste
+
