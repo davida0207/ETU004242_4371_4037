@@ -1,4 +1,5 @@
 <?php
+/** Gabarit principal — BNGRC */
 $title = $title ?? 'BNGRC';
 ?>
 <!DOCTYPE html>
@@ -7,22 +8,26 @@ $title = $title ?? 'BNGRC';
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= htmlspecialchars((string)$title) ?></title>
+
+	<!-- Polices Google : Manrope (titres) + Space Mono (chiffres) -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+	<!-- Feuilles de style principales -->
 	<link rel="stylesheet" href="/assets/layout.css">
 	<link rel="stylesheet" href="/assets/style.css">
+
 	<?php
-	// Attempt to include a page-specific CSS file under /public/assets/pages/
-	$root = dirname(__DIR__, 3); // project root
-	$uri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
+	/* Chargement automatique du CSS propre à la page courante.
+	   Exemple : /besoins → /assets/pages/besoins.css (si le fichier existe). */
+	$root = dirname(__DIR__, 3);
+	$uri  = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '';
 	$name = trim($uri, '/');
 	if ($name === '') {
 		$name = 'index';
 	}
-	// sanitize: keep letters, numbers, dash and underscore
 	$name = preg_replace('/[^a-zA-Z0-9\-_\/]+/', '', $name);
-	// replace slashes with dashes for nested routes
 	$name = str_replace('/', '-', $name);
 	$pageCssFs = $root . '/public/assets/pages/' . $name . '.css';
 	if (file_exists($pageCssFs)) {

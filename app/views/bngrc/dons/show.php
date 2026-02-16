@@ -14,7 +14,7 @@ $resteQ = max(0.0, $quantite - $attribueQ);
 		<a class="btn btn-secondary" href="/dons">← Retour</a>
 		<?php if (!empty($canEdit)): ?><a class="btn btn-secondary" href="/dons/<?= (int)$don['id'] ?>/edit">Modifier</a><?php endif; ?>
 		<?php if (!empty($canDelete)): ?>
-			<form method="post" action="/dons/<?= (int)$don['id'] ?>/delete" style="display:inline">
+			<form method="post" action="/dons/<?= (int)$don['id'] ?>/delete" class="inline-form">
 				<button class="btn btn-danger" type="submit">Supprimer</button>
 			</form>
 		<?php endif; ?>
@@ -29,7 +29,7 @@ $resteQ = max(0.0, $quantite - $attribueQ);
 </div>
 
 <div class="card">
-	<h3 style="margin-bottom: 10px;">Allocations</h3>
+	<h3 class="mb-md">Allocations</h3>
 	<table class="table">
 		<thead>
 			<tr>

@@ -16,9 +16,9 @@ $action = $mode === 'edit' ? '/regions/' . (int)($region['id'] ?? 0) . '/edit' :
 		<input class="input" type="text" name="nom" value="<?= htmlspecialchars((string)($region['nom'] ?? '')) ?>">
 		<?php if (!empty($errors['nom'])): ?><div class="error"><?= htmlspecialchars((string)$errors['nom']) ?></div><?php endif; ?>
 
-		<p style="margin-top: 12px;">
+		<div class="form-group">
 			<button class="btn btn-primary" type="submit">Enregistrer</button>
-		</p>
+		</div>
 	</form>
 </div>
 

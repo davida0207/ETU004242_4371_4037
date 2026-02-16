@@ -44,7 +44,7 @@ $flashMap = [
 				<td><?= htmlspecialchars((string)$r['nom']) ?></td>
 				<td>
 					<a class="btn btn-secondary" href="/regions/<?= (int)$r['id'] ?>/edit">Modifier</a>
-					<form method="post" action="/regions/<?= (int)$r['id'] ?>/delete" style="display:inline">
+					<form method="post" action="/regions/<?= (int)$r['id'] ?>/delete" class="inline-form">
 						<button class="btn btn-danger" type="submit">Supprimer</button>
 					</form>
 				</td>

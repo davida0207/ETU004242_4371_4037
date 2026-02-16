@@ -22,16 +22,16 @@ $action = $mode === 'edit' ? '/villes/' . (int)($ville['id'] ?? 0) . '/edit' : '
 			<?php endforeach; ?>
 		</select>
 		<?php if (!empty($errors['region_id'])): ?><div class="error"><?= htmlspecialchars((string)$errors['region_id']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Nom</label>
 		<input class="input" type="text" name="nom" value="<?= htmlspecialchars((string)($ville['nom'] ?? '')) ?>">
 		<?php if (!empty($errors['nom'])): ?><div class="error"><?= htmlspecialchars((string)$errors['nom']) ?></div><?php endif; ?>
 
-		<p style="margin-top: 12px;">
+		<div class="form-group">
 			<button class="btn btn-primary" type="submit">Enregistrer</button>
-		</p>
+		</div>
 	</form>
 </div>
 

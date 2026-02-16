@@ -18,8 +18,8 @@ $filters = $filters ?? ['categorie' => null];
 <?php endif; ?>
 
 <div class="filters">
-	<form method="get" action="/articles" style="display:flex; gap: 12px; flex-wrap: wrap; align-items: center; width: 100%;">
-		<select name="categorie" class="input" style="max-width: 340px;">
+	<form method="get" action="/articles" class="filters-form">
+		<select name="categorie" class="input input--md">
 			<option value="">Toutes les catégories</option>
 			<?php foreach (($categories ?? []) as $key => $label): ?>
 				<option value="<?= htmlspecialchars((string)$key) ?>" <?= ((string)($filters['categorie'] ?? '') === (string)$key) ? 'selected' : '' ?>>
@@ -57,7 +57,7 @@ $filters = $filters ?? ['categorie' => null];
 				<td>
 					<a class="btn btn-secondary" href="/articles/<?= (int)$a['id'] ?>/edit">Modifier</a>
 					<?php if ((int)$a['actif'] === 1): ?>
-						<form method="post" action="/articles/<?= (int)$a['id'] ?>/deactivate" style="display:inline">
+						<form method="post" action="/articles/<?= (int)$a['id'] ?>/deactivate" class="inline-form">
 							<button class="btn btn-danger" type="submit">Désactiver</button>
 						</form>
 					<?php endif; ?>

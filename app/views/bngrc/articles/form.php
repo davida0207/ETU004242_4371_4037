@@ -21,36 +21,36 @@ $action = $mode === 'edit' ? '/articles/' . (int)($article['id'] ?? 0) . '/edit'
 			<?php endforeach; ?>
 		</select>
 		<?php if (!empty($errors['categorie'])): ?><div class="error"><?= htmlspecialchars((string)$errors['categorie']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Libellé</label>
 		<input class="input" type="text" name="libelle" value="<?= htmlspecialchars((string)($article['libelle'] ?? '')) ?>">
 		<?php if (!empty($errors['libelle'])): ?><div class="error"><?= htmlspecialchars((string)$errors['libelle']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Unité</label>
 		<input class="input" type="text" name="unite" value="<?= htmlspecialchars((string)($article['unite'] ?? '')) ?>">
 		<?php if (!empty($errors['unite'])): ?><div class="error"><?= htmlspecialchars((string)$errors['unite']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Prix unitaire</label>
 		<input class="input" type="number" step="0.01" name="prix_unitaire" value="<?= htmlspecialchars((string)($article['prix_unitaire'] ?? '0')) ?>">
 		<?php if (!empty($errors['prix_unitaire'])): ?><div class="error"><?= htmlspecialchars((string)$errors['prix_unitaire']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Actif</label>
 		<select class="input" name="actif">
 			<option value="1" <?= ((int)($article['actif'] ?? 1) === 1) ? 'selected' : '' ?>>Oui</option>
 			<option value="0" <?= ((int)($article['actif'] ?? 1) === 0) ? 'selected' : '' ?>>Non</option>
 		</select>
 
-		<p style="margin-top: 12px;">
+		<div class="form-group">
 			<button class="btn btn-primary" type="submit">Enregistrer</button>
-		</p>
+		</div>
 	</form>
 </div>
 

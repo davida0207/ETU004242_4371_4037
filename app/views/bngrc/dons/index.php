@@ -22,8 +22,8 @@ $filters = $filters ?? [];
 <?php endif; ?>
 
 <div class="filters">
-	<form method="get" action="/dons" style="display:flex; gap: 12px; flex-wrap: wrap; align-items: center; width: 100%;">
-		<select name="categorie" class="input" style="max-width: 220px;">
+	<form method="get" action="/dons" class="filters-form">
+		<select name="categorie" class="input input--sm">
 			<?php foreach (($categories ?? []) as $key => $label): ?>
 				<option value="<?= htmlspecialchars((string)$key) ?>" <?= ((string)($filters['categorie'] ?? '') === (string)$key) ? 'selected' : '' ?>>
 					<?= htmlspecialchars((string)$label) ?>
@@ -31,7 +31,7 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<select name="article_id" class="input" style="max-width: 260px;">
+		<select name="article_id" class="input input--md">
 			<option value="">Tous articles</option>
 			<?php foreach (($articles ?? []) as $a): ?>
 				<option value="<?= (int)$a['id'] ?>" <?= ((string)($filters['article_id'] ?? '') === (string)$a['id']) ? 'selected' : '' ?>>
@@ -40,8 +40,8 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<input class="input" type="date" name="start_date" value="<?= htmlspecialchars((string)($filters['start_date'] ?? '')) ?>" style="max-width: 200px;">
-		<input class="input" type="date" name="end_date" value="<?= htmlspecialchars((string)($filters['end_date'] ?? '')) ?>" style="max-width: 200px;">
+		<input class="input input--date" type="date" name="start_date" value="<?= htmlspecialchars((string)($filters['start_date'] ?? '')) ?>">
+		<input class="input input--date" type="date" name="end_date" value="<?= htmlspecialchars((string)($filters['end_date'] ?? '')) ?>">
 
 		<button class="btn btn-secondary" type="submit">Filtrer</button>
 		<a class="btn btn-primary" href="/dons/add">+ Ajouter</a>
@@ -80,7 +80,7 @@ $filters = $filters ?? [];
 				<td>
 					<a class="btn btn-secondary" href="/dons/<?= (int)$d['id'] ?>">Détail</a>
 					<a class="btn btn-secondary" href="/dons/<?= (int)$d['id'] ?>/edit">Modifier</a>
-					<form method="post" action="/dons/<?= (int)$d['id'] ?>/delete" style="display:inline">
+					<form method="post" action="/dons/<?= (int)$d['id'] ?>/delete" class="inline-form">
 						<button class="btn btn-danger" type="submit">Supprimer</button>
 					</form>
 				</td>

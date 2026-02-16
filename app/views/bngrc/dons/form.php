@@ -22,32 +22,32 @@ $action = $mode === 'edit' ? '/dons/' . (int)($don['id'] ?? 0) . '/edit' : '/don
 			<?php endforeach; ?>
 		</select>
 		<?php if (!empty($errors['article_id'])): ?><div class="error"><?= htmlspecialchars((string)$errors['article_id']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Quantité</label>
 		<input class="input" type="number" step="0.01" name="quantite" value="<?= htmlspecialchars((string)($don['quantite'] ?? '')) ?>">
 		<?php if (!empty($errors['quantite'])): ?><div class="error"><?= htmlspecialchars((string)$errors['quantite']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Date don</label>
 		<input class="input" type="date" name="date_don" value="<?= htmlspecialchars((string)($don['date_don'] ?? '')) ?>">
 		<?php if (!empty($errors['date_don'])): ?><div class="error"><?= htmlspecialchars((string)$errors['date_don']) ?></div><?php endif; ?>
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Source / Donateur (optionnel)</label>
 		<input class="input" type="text" name="source" value="<?= htmlspecialchars((string)($don['source'] ?? '')) ?>">
+	</div>
 
-		<p style="margin-top: 12px;"></p>
-
+	<div class="form-group">
 		<label>Note</label>
 		<input class="input" type="text" name="note" value="<?= htmlspecialchars((string)($don['note'] ?? '')) ?>">
 
-		<p style="margin-top: 12px;">
+		<div class="form-group">
 			<button class="btn btn-primary" type="submit">Enregistrer</button>
-		</p>
+		</div>
 	</form>
 </div>
 

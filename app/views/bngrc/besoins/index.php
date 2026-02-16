@@ -22,8 +22,8 @@ $filters = $filters ?? [];
 <?php endif; ?>
 
 <div class="filters">
-	<form method="get" action="/besoins" style="display:flex; gap: 12px; flex-wrap: wrap; align-items: center; width: 100%;">
-		<select name="region_id" class="input" style="max-width: 260px;">
+	<form method="get" action="/besoins" class="filters-form">
+		<select name="region_id" class="input input--md">
 			<option value="">Toutes régions</option>
 			<?php foreach (($regions ?? []) as $r): ?>
 				<option value="<?= (int)$r['id'] ?>" <?= ((string)($filters['region_id'] ?? '') === (string)$r['id']) ? 'selected' : '' ?>>
@@ -32,7 +32,7 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<select name="ville_id" class="input" style="max-width: 260px;">
+		<select name="ville_id" class="input input--md">
 			<option value="">Toutes villes</option>
 			<?php foreach (($villes ?? []) as $v): ?>
 				<option value="<?= (int)$v['id'] ?>" <?= ((string)($filters['ville_id'] ?? '') === (string)$v['id']) ? 'selected' : '' ?>>
@@ -41,7 +41,7 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<select name="categorie" class="input" style="max-width: 220px;">
+		<select name="categorie" class="input input--sm">
 			<?php foreach (($categories ?? []) as $key => $label): ?>
 				<option value="<?= htmlspecialchars((string)$key) ?>" <?= ((string)($filters['categorie'] ?? '') === (string)$key) ? 'selected' : '' ?>>
 					<?= htmlspecialchars((string)$label) ?>
@@ -49,7 +49,7 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<select name="article_id" class="input" style="max-width: 260px;">
+		<select name="article_id" class="input input--md">
 			<option value="">Tous articles</option>
 			<?php foreach (($articles ?? []) as $a): ?>
 				<option value="<?= (int)$a['id'] ?>" <?= ((string)($filters['article_id'] ?? '') === (string)$a['id']) ? 'selected' : '' ?>>
@@ -58,8 +58,8 @@ $filters = $filters ?? [];
 			<?php endforeach; ?>
 		</select>
 
-		<input class="input" type="date" name="start_date" value="<?= htmlspecialchars((string)($filters['start_date'] ?? '')) ?>" style="max-width: 200px;">
-		<input class="input" type="date" name="end_date" value="<?= htmlspecialchars((string)($filters['end_date'] ?? '')) ?>" style="max-width: 200px;">
+		<input class="input input--date" type="date" name="start_date" value="<?= htmlspecialchars((string)($filters['start_date'] ?? '')) ?>">
+		<input class="input input--date" type="date" name="end_date" value="<?= htmlspecialchars((string)($filters['end_date'] ?? '')) ?>">
 
 		<button class="btn btn-secondary" type="submit">Filtrer</button>
 		<a class="btn btn-primary" href="/besoins/add">+ Ajouter</a>
@@ -102,7 +102,7 @@ $filters = $filters ?? [];
 				<td>
 					<a class="btn btn-secondary" href="/besoins/<?= (int)$b['id'] ?>">Détail</a>
 					<a class="btn btn-secondary" href="/besoins/<?= (int)$b['id'] ?>/edit">Modifier</a>
-					<form method="post" action="/besoins/<?= (int)$b['id'] ?>/delete" style="display:inline">
+					<form method="post" action="/besoins/<?= (int)$b['id'] ?>/delete" class="inline-form">
 						<button class="btn btn-danger" type="submit">Supprimer</button>
 					</form>
 				</td>

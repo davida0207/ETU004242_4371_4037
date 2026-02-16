@@ -19,7 +19,7 @@ $prix = (float)($besoin['prix_unitaire'] ?? 0);
 		<a class="btn btn-secondary" href="/besoins">← Retour</a>
 		<a class="btn btn-secondary" href="/besoins/<?= (int)$besoin['id'] ?>/edit">Modifier</a>
 		<?php if (!empty($canDelete)): ?>
-			<form method="post" action="/besoins/<?= (int)$besoin['id'] ?>/delete" style="display:inline">
+			<form method="post" action="/besoins/<?= (int)$besoin['id'] ?>/delete" class="inline-form">
 				<button class="btn btn-danger" type="submit">Supprimer</button>
 			</form>
 		<?php endif; ?>
@@ -36,7 +36,7 @@ $prix = (float)($besoin['prix_unitaire'] ?? 0);
 </div>
 
 <div class="card">
-	<h3 style="margin-bottom: 10px;">Allocations</h3>
+	<h3 class="mb-md">Allocations</h3>
 	<table class="table">
 		<thead>
 			<tr>
