@@ -7,7 +7,7 @@ $title = $title ?? 'BNGRC';
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= htmlspecialchars((string)$title) ?></title>
-	<?php include __DIR__ . '/_style.php'; ?>
+	<link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
 	<div class="container">
