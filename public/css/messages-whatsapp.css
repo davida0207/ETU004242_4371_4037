@@ -1,0 +1,318 @@
+/* WhatsApp-like UI overrides for the Messages page.
+   Scoped to body[data-page="messages"] to avoid affecting other pages.
+   Keeps existing palette by relying on Bootstrap CSS variables. */
+
+body[data-page="messages"] .messages-container {
+    --wa-chat-bg: color-mix(in srgb, var(--bs-body-bg) 80%, var(--bs-tertiary-bg) 20%);
+    --wa-bubble-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+    --wa-bubble-radius: 18px;
+}
+
+body[data-page="messages"] .messages-layout {
+    display: flex;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--bs-body-bg);
+    box-shadow: var(--bs-box-shadow-sm);
+    min-height: 70vh;
+}
+
+
+/* Sidebar (conversations) */
+
+body[data-page="messages"] .messages-sidebar {
+    width: 360px;
+    max-width: 100%;
+    background: var(--bs-body-bg);
+    border-right: 1px solid var(--bs-border-color);
+}
+
+body[data-page="messages"] .messages-header {
+    padding: 14px 14px 10px;
+    background: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+body[data-page="messages"] .messages-header .form-control {
+    border-radius: 999px;
+    padding-left: 40px;
+    background: var(--bs-tertiary-bg);
+    border-color: transparent;
+}
+
+body[data-page="messages"] .messages-header .search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.65;
+}
+
+body[data-page="messages"] .messages-header .search-container {
+    position: relative;
+}
+
+body[data-page="messages"] .conversations-list {
+    padding: 8px;
+}
+
+body[data-page="messages"] .conversation-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+}
+
+body[data-page="messages"] .conversation-item:hover {
+    background: color-mix(in srgb, var(--bs-tertiary-bg) 80%, transparent 20%);
+}
+
+body[data-page="messages"] .conversation-item.active {
+    background: color-mix(in srgb, rgba(var(--bs-primary-rgb), 0.12) 70%, var(--bs-tertiary-bg) 30%);
+    border: 1px solid rgba(var(--bs-primary-rgb), 0.18);
+}
+
+body[data-page="messages"] .conversation-avatar img,
+body[data-page="messages"] .chat-avatar {
+    border-radius: 999px;
+}
+
+
+/* Chat area */
+
+body[data-page="messages"] .chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+body[data-page="messages"] .chat-header {
+    padding: 10px 14px;
+    background: var(--bs-body-bg);
+    border-bottom: 1px solid var(--bs-border-color);
+}
+
+body[data-page="messages"] .chat-actions .btn {
+    border-radius: 999px;
+}
+
+body[data-page="messages"] .chat-messages {
+    flex: 1;
+    overflow: auto;
+    padding: 14px;
+    background: var(--wa-chat-bg);
+    /* subtle WhatsApp-ish texture without changing palette */
+    background-image: radial-gradient(circle at 20px 20px, rgba(0, 0, 0, 0.035) 1px, transparent 0), radial-gradient(circle at 60px 60px, rgba(0, 0, 0, 0.025) 1px, transparent 0);
+    background-size: 80px 80px;
+}
+
+body[data-page="messages"] .date-separator {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+body[data-page="messages"] .date-separator .date-label {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.06);
+    color: var(--bs-secondary-color);
+}
+
+
+/* Message bubbles */
+
+body[data-page="messages"] .message-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+body[data-page="messages"] .message {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+body[data-page="messages"] .message.own-message {
+    justify-content: flex-end;
+}
+
+body[data-page="messages"] .message-avatar,
+body[data-page="messages"] .typing-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 999px;
+    border: 1px solid var(--bs-border-color);
+}
+
+body[data-page="messages"] .message-bubble {
+    max-width: min(78%, 720px);
+    background: #fff;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--wa-bubble-radius);
+    padding: 8px 10px;
+    box-shadow: var(--wa-bubble-shadow);
+    position: relative;
+}
+
+
+/* Incoming messages: avoid pure white-on-light-background */
+
+body[data-page="messages"] .message:not(.own-message) .message-bubble {
+    background: color-mix(in srgb, var(--bs-tertiary-bg) 88%, var(--bs-body-bg) 12%);
+    color: var(--bs-body-color);
+}
+
+body[data-page="messages"] .own-message .message-bubble {
+    background: rgba(var(--bs-primary-rgb), 0.12);
+    border-color: rgba(var(--bs-primary-rgb), 0.18);
+}
+
+
+/* Bubble tails */
+
+body[data-page="messages"] .message:not(.own-message) .message-bubble::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    bottom: 10px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-left: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg);
+    color: var(--bs-border-color);
+}
+
+body[data-page="messages"] .own-message .message-bubble::before {
+    content: "";
+    position: absolute;
+    right: -6px;
+    bottom: 10px;
+    width: 12px;
+    height: 12px;
+    background: inherit;
+    border-right: 1px solid rgba(var(--bs-primary-rgb), 0.18);
+    border-bottom: 1px solid rgba(var(--bs-primary-rgb), 0.18);
+    transform: rotate(-45deg);
+}
+
+body[data-page="messages"] .message-content p {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+body[data-page="messages"] .message-info {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    color: var(--bs-secondary-color);
+    body[data-page="messages"] .message-status .seen-label {
+        font-size: 12px;
+        color: var(--bs-primary);
+        font-weight: 600;
+    }
+}
+
+body[data-page="messages"] .message-status i {
+    color: rgba(var(--bs-primary-rgb), 0.9);
+}
+
+
+/* Typing indicator */
+
+body[data-page="messages"] .typing-indicator {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+body[data-page="messages"] .typing-content {
+    background: #fff;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--wa-bubble-radius);
+    padding: 8px 10px;
+    box-shadow: var(--wa-bubble-shadow);
+}
+
+
+/* Input bar */
+
+body[data-page="messages"] .chat-input {
+    padding: 10px 12px;
+    background: var(--bs-body-bg);
+    border-top: 1px solid var(--bs-border-color);
+    position: relative;
+}
+
+body[data-page="messages"] .chat-input .input-container {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+body[data-page="messages"] .chat-input .btn {
+    border-radius: 999px;
+}
+
+body[data-page="messages"] .chat-input .form-control {
+    border-radius: 999px;
+    background: var(--bs-tertiary-bg);
+    border-color: transparent;
+    padding: 10px 14px;
+    min-height: 44px;
+}
+
+body[data-page="messages"] .emoji-picker {
+    position: absolute;
+    right: 12px;
+    bottom: 70px;
+    width: min(320px, calc(100% - 24px));
+    background: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 16px;
+    box-shadow: var(--bs-box-shadow);
+    padding: 10px;
+}
+
+body[data-page="messages"] .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+}
+
+body[data-page="messages"] .emoji-btn {
+    border: 0;
+    background: transparent;
+    border-radius: 10px;
+    padding: 6px;
+}
+
+body[data-page="messages"] .emoji-btn:hover {
+    background: color-mix(in srgb, var(--bs-tertiary-bg) 80%, transparent 20%);
+}
+
+
+/* Responsive: on small screens, let the layout stack */
+
+@media (max-width: 992px) {
+    body[data-page="messages"] .messages-layout {
+        min-height: 75vh;
+    }
+    body[data-page="messages"] .messages-sidebar {
+        width: 100%;
+    }
+}

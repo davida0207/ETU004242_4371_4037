@@ -1,0 +1,259 @@
+projet: Suivi-Collectes-Distributions-BNGRC
+framework: FlightPHP (MVC) + PDO + Bootstrap (template dashboard)
+design_source: Creative Tim Free Bootstrap Themes (dashboard)
+
+equipes:
+
+  - responsable: Cadrage_et_setup
+    description: Mise en place du repo, structure MVC, configuration, base des routes
+    taches:
+      - Lire l'énoncé et écrire un mini cahier des charges (MVP + options)
+      - Définir le dictionnaire des données (besoin, don, allocation, article, ville, région)
+      - Créer l'arborescence MVC:
+          - /public (index.php, assets)
+          - /app/controllers
+          - /app/models
+          - /app/views (layout + pages)
+          - /app/config (db.php, constants.php)
+      - Installer/configurer FlightPHP et un autoload (composer si possible)
+      - Créer le routeur:
+          - routes pour dashboard, référentiel, besoins, dons, dispatch
+      - Mettre une page 404 + gestion d'erreurs (try/catch, messages)
+    pages_a_fournir:
+      - Page 404
+      - Layout global (header/navbar/footer)
+    livrables:
+      - public/index.php (bootstrap app + routes)
+      - app/config/db.php
+      - app/config/constants.php
+      - app/views/layout.php
+      - app/views/partials/navbar.php
+      - app/views/partials/footer.php
+
+  - responsable: Base_de_donnees
+    description: Schéma SQL + contraintes + données de test + requêtes utiles
+    taches:
+      - Créer la base (nom + encodage utf8mb4)
+      - Créer tables:
+          - regions, villes
+          - articles (categorie, prix_unitaire fixe)
+          - besoins, dons
+          - allocations
+          - dispatch_runs (optionnel mais recommandé)
+      - Ajouter les clés étrangères (FK) + indexes (sur ville_id, article_id, dates)
+      - Écrire seed.sql:
+          - 2-3 régions, 6-10 villes
+          - 6-12 articles (riz, huile, tôle, clou, argent)
+          - 10+ besoins (répartis par villes)
+          - 10+ dons (dates différentes)
+      - Écrire quelques requêtes de validation:
+          - besoins par ville + total valeur
+          - dons par article + reste non attribué
+          - allocations par ville
+    livrables:
+      - base.sql
+      - seed.sql
+      - notes_requetes_test.sql
+
+  - responsable: Referentiel_regions_villes_articles
+    description: CRUD du référentiel (indispensable pour saisir besoins/dons proprement)
+    taches:
+      - Régions:
+          - Lister régions
+          - Ajouter région
+          - Modifier région
+          - Supprimer région (bloquer si villes existent ou cascade maîtrisée)
+      - Villes:
+          - Lister villes + filtre par région
+          - Ajouter ville (region obligatoire)
+          - Modifier ville
+          - Supprimer ville (bloquer si besoins existent)
+      - Articles (types de dons/besoins):
+          - Lister articles (par catégorie: nature/matériaux/argent)
+          - Ajouter article (libellé, unité, prix_unitaire)
+          - Modifier article (prix_unitaire modifiable uniquement si règle le permet; sinon bloquer après usage)
+          - Désactiver article (plutôt que supprimer)
+    pages_a_fournir:
+      - /regions (liste)
+      - /regions/add (form)
+      - /regions/{id}/edit (form)
+      - /villes (liste + filtre région)
+      - /villes/add
+      - /villes/{id}/edit
+      - /articles (liste + onglets par catégorie)
+      - /articles/add
+      - /articles/{id}/edit
+    livrables:
+      - RegionController.php + RegionModel.php
+      - VilleController.php + VilleModel.php
+      - ArticleController.php + ArticleModel.php
+      - vues_referentiel/*
+
+  - responsable: Gestion_besoins
+    description: Saisie et suivi des besoins par ville (sans personne)
+    taches:
+      - Créer la page liste des besoins:
+          - filtre: région, ville, catégorie, article, période
+          - afficher: quantite, prix_unitaire, valeur_totale, reste à couvrir
+      - Créer le formulaire d’ajout:
+          - sélectionner ville
+          - sélectionner article
+          - saisir quantite
+          - saisir date_besoin (ou auto aujourd’hui)
+          - note/commentaire
+      - Modifier besoin (quantite et/ou note)
+      - Supprimer besoin (si aucune allocation liée, sinon bloquer ou soft delete)
+      - Page détail besoin:
+          - affiche toutes les allocations (dons attribués)
+          - calcule: couvert vs reste
+      - Validation:
+          - quantite > 0
+          - article actif
+    pages_a_fournir:
+      - /besoins (liste + filtres)
+      - /besoins/add
+      - /besoins/{id}/edit
+      - /besoins/{id} (détail)
+    livrables:
+      - BesoinController.php
+      - BesoinModel.php
+      - vues_besoins/*
+
+  - responsable: Gestion_dons
+    description: Saisie des dons entrants avant dispatch
+    taches:
+      - Page liste des dons:
+          - filtres: période, article, catégorie
+          - afficher: quantite, date_don, reste à attribuer
+      - Formulaire d’ajout don:
+          - sélectionner article
+          - saisir quantite
+          - saisir date_don
+          - (optionnel) donateur / source
+          - note
+      - Page détail don:
+          - allocations déjà faites
+          - quantité restante
+      - Règles:
+          - empêcher modification/suppression si dispatch déjà fait (ou gérer proprement)
+    pages_a_fournir:
+      - /dons (liste)
+      - /dons/add
+      - /dons/{id} (détail)
+    livrables:
+      - DonController.php
+      - DonModel.php
+      - vues_dons/*
+
+  - responsable: Dispatch_simulation
+    description: Moteur de répartition des dons (ordre date puis saisie) + génération des allocations
+    taches:
+      - Clarifier l’ordre de traitement (à écrire dans README):
+          - trier dons: date_don ASC, id ASC
+          - trier besoins: date_besoin ASC, id ASC
+          - matching par article (riz -> besoin riz, etc.)
+      - Écrire la fonction "runDispatch":
+          - récupérer tous les dons non totalement attribués
+          - pour chaque don, parcourir les besoins ouverts du même article
+          - créer allocations (min(reste_don, reste_besoin))
+          - mettre à jour restes (calculés ou stockés)
+      - Stockage du résultat:
+          - créer un dispatch_run
+          - lier toutes les allocations au run
+      - Sécuriser par transaction SQL (commit/rollback si erreur)
+      - Page "Simuler":
+          - bouton "Lancer dispatch"
+          - afficher un résumé: nb allocations, dons restants, besoins restants
+      - Page historique runs:
+          - liste runs + détails
+      - Option utile:
+          - bouton "Reset simulation" (supprime allocations et relance proprement)
+    pages_a_fournir:
+      - /dispatch (écran simulation)
+      - /dispatch/runs (liste)
+      - /dispatch/runs/{id} (détail)
+    livrables:
+      - DispatchController.php
+      - DispatchService.php (ou fonctions_metier.php)
+      - AllocationModel.php
+      - vues_dispatch/*
+
+  - responsable: Dashboard_et_stats
+    description: Page objectif: villes + besoins + dons attribués (vue globale) + mini stats
+    taches:
+      - Construire la requête "dashboard par ville":
+          - besoins_total (valeur et quantité)
+          - attribue_total (valeur et quantité)
+          - reste_total
+      - Afficher un tableau:
+          - Ville | Région | Besoins (valeur) | Attribué | Reste | Détails
+      - Boutons "Voir détails ville":
+          - page ville: besoins + allocations + timeline
+      - Ajouter 3-4 cartes stats en haut:
+          - total besoins
+          - total attribué
+          - total reste
+          - nb villes impactées
+    pages_a_fournir:
+      - /dashboard
+      - /villes/{id}/dashboard (détail ville)
+    livrables:
+      - DashboardController.php
+      - vues_dashboard/*
+
+  - responsable: Authentification_et_roles
+    description: Accès sécurisé (optionnel si non demandé, mais recommandé)
+    taches:
+      - Page login + sessions
+      - Stocker un utilisateur admin en seed.sql (ou créer via script)
+      - Protéger routes (middleware simple):
+          - si non connecté -> redirect /login
+      - (Option) rôles:
+          - admin: référentiel + dispatch
+          - opérateur: saisie besoins/dons + dashboard
+      - Déconnexion
+    pages_a_fournir:
+      - /login
+      - /logout
+    livrables:
+      - AuthController.php
+      - UserModel.php
+      - vues_auth/*
+
+  - responsable: Interface_et_finition
+    description: UI propre + messages + cohérence + footer (noms/ETU)
+    taches:
+      - Intégrer un template Bootstrap dashboard (menu latéral ou topbar)
+      - Créer composants réutilisables:
+          - alert succès/erreur, breadcrumbs, pagination simple
+      - Uniformiser les formulaires (validation + messages)
+      - Footer obligatoire:
+          - noms membres + numéros ETU + contexte BNGRC
+      - Vérifier responsive (desktop + mobile)
+    pages_a_fournir:
+      - Toutes pages avec layout unifié
+    livrables:
+      - assets css/js
+      - layout unifié + partials
+      - footer.php
+
+  - responsable: Tests_et_validation
+    description: Vérifications et mini rapport
+    taches:
+      - Tester CRUD référentiel
+      - Tester saisie besoins + filtres
+      - Tester saisie dons + détails
+      - Tester dispatch:
+          - cas simple (dons < besoins)
+          - cas dons > besoins
+          - cas multi-articles (riz vs tôle vs argent)
+          - ordre date + id (saisie)
+      - Tester le dashboard (totaux cohérents)
+      - Vérifier intégrité FK + données seed propres
+      - Écrire un rapport court:
+          - comment installer
+          - comment lancer la simulation
+          - captures (option)
+    livrables:
+      - rapport_tests.md
+      - README.md

@@ -1,0 +1,3 @@
+-- NOTE: This file is not used by the project.
+-- The application uses the existing `chat` table defined in `schema.sql`.
+-- Kept only as a reference from an earlier prototype.
