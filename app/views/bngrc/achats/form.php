@@ -94,7 +94,10 @@ $montantTotal = $montantBase * (1.0 + $frais / 100.0);
 						<h6 class="text-sm font-weight-bold mb-2">Résumé financier</h6>
 						<p class="text-sm mb-1"><strong>Prix unitaire :</strong> <span id="rf-prix-unitaire"><?= htmlspecialchars(moneyAr($prixUnitaire)) ?></span></p>
 						<p class="text-sm mb-1"><strong>Montant de base :</strong> <span id="rf-montant-base"><?= htmlspecialchars(moneyAr($montantBase)) ?></span></p>
-						<p class="text-sm mb-1"><strong>Frais :</strong> <span id="rf-frais-percent"><?= htmlspecialchars((string)$frais) ?></span>%</p>
+						<p class="text-sm mb-1"><strong>Frais :</strong>
+							<input type="number" name="frais_percent" id="rf-frais-percent-input" class="form-control d-inline-block" style="width:6rem; display:inline-block; margin-right:.5rem;" step="0.01" min="0" max="100" value="<?= htmlspecialchars((string)$frais) ?>">
+							%
+						</p>
 						<p class="text-sm mb-1"><strong>Montant total :</strong> <span id="rf-montant-total"><?= htmlspecialchars(moneyAr($montantTotal)) ?></span></p>
 						<p class="text-sm mb-0"><strong>Fonds restants :</strong> <?= htmlspecialchars(moneyAr((float)$cashInfo['cash_restant'])) ?></p>
 						<?php if ($errors['cash']): ?><div class="text-danger text-xs mt-1"><?= htmlspecialchars($errors['cash']) ?></div><?php endif; ?>
@@ -132,7 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	const spanPrix = document.getElementById('rf-prix-unitaire');
 	const spanBase = document.getElementById('rf-montant-base');
 	const spanTotal = document.getElementById('rf-montant-total');
-	const fraisPercent = parseFloat(document.getElementById('rf-frais-percent').textContent.replace(',', '.')) || 0;
+	const fraisInput = document.getElementById('rf-frais-percent-input');
+	function getFraisPercent() {
+		if (!fraisInput) return 0;
+		return parseFloat(String(fraisInput.value).replace(',', '.')) || 0;
+	}
 
 	function formatAr(v) {
 		return new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(v) + ' Ar';
@@ -144,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		const q = parseFloat(inputQuantite.value.replace(',', '.')) || 0;
 		const pu = parseFloat(meta.prix_unitaire) || 0;
 		const base = q * pu;
-		const total = base * (1 + fraisPercent / 100);
+		const total = base * (1 + getFraisPercent() / 100);
 		if (spanPrix) spanPrix.textContent = formatAr(pu);
 		if (spanBase) spanBase.textContent = formatAr(base);
 		if (spanTotal) spanTotal.textContent = formatAr(total);
@@ -155,6 +162,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 	if (inputQuantite) {
 		inputQuantite.addEventListener('input', recalc);
+	}
+	if (fraisInput) {
+		fraisInput.addEventListener('input', recalc);
 	}
 
 	recalc();

@@ -5,6 +5,7 @@ namespace app\controllers\bngrc;
 use app\models\AchatModel;
 use app\models\BesoinModel;
 use app\models\RegionModel;
+use app\models\SettingModel;
 use app\models\VilleModel;
 use Flight;
 use PDO;
@@ -72,8 +73,18 @@ class AchatController
 			'note' => '',
 		];
 
-		$config = Flight::get('config');
-		$fraisPercent = (float)($config['bngrc']['purchase_fee_percent'] ?? 0.0);
+		$settingModel = new SettingModel($db);
+		$configFallback = (float)(Flight::get('config')['bngrc']['purchase_fee_percent'] ?? 10.0);
+		$fraisPercentDb = $settingModel->getPurchaseFeePercent($configFallback);
+		$postedFrais = (string)($req->data->frais_percent ?? '');
+		if ($postedFrais !== '') {
+			$f = is_numeric($postedFrais) ? (float)$postedFrais : $fraisPercentDb;
+			if ($f < 0.0) $f = 0.0;
+			if ($f > 100.0) $f = $fraisPercentDb;
+			$fraisPercent = $f;
+		} else {
+			$fraisPercent = $fraisPercentDb;
+		}
 		$cashInfo = $this->cashSummary($db, new AchatModel($db));
 
 		Flight::render('bngrc/achats/form', [
@@ -133,8 +144,18 @@ class AchatController
 			}
 		}
 
-		$config = Flight::get('config');
-		$fraisPercent = (float)($config['bngrc']['purchase_fee_percent'] ?? 0.0);
+		$settingModel = new SettingModel($db);
+		$configFallback = (float)(Flight::get('config')['bngrc']['purchase_fee_percent'] ?? 10.0);
+		$fraisPercentDb = $settingModel->getPurchaseFeePercent($configFallback);
+		$postedFrais = (string)($req->data->frais_percent ?? '');
+		if ($postedFrais !== '') {
+			$f = is_numeric($postedFrais) ? (float)$postedFrais : $fraisPercentDb;
+			if ($f < 0.0) $f = 0.0;
+			if ($f > 100.0) $f = $fraisPercentDb;
+			$fraisPercent = $f;
+		} else {
+			$fraisPercent = $fraisPercentDb;
+		}
 		$quantiteF = is_numeric($quantite) ? (float)$quantite : 0.0;
 		$montantBase = $quantiteF * $prixUnitaire;
 		$montantTotal = $montantBase * (1.0 + $fraisPercent / 100.0);

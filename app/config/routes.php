@@ -9,6 +9,7 @@ use app\controllers\bngrc\DashboardController as BngrcDashboardController;
 use app\controllers\bngrc\AchatController as BngrcAchatController;
 use app\controllers\bngrc\DispatchController as BngrcDispatchController;
 use app\controllers\bngrc\RecapController as BngrcRecapController;
+use app\controllers\bngrc\SettingsController as BngrcSettingsController;
 use app\controllers\bngrc\DonController as BngrcDonController;
 use app\controllers\bngrc\RegionController as BngrcRegionController;
 use app\controllers\bngrc\VilleController as BngrcVilleController;
@@ -39,6 +40,7 @@ $bngrcDons = new BngrcDonController();
 $bngrcAchats = new BngrcAchatController();
 $bngrcDispatch = new BngrcDispatchController();
 $bngrcRecap = new BngrcRecapController();
+$bngrcSettings = new BngrcSettingsController();
 
 $router->get('/bngrc/dashboard', [$bngrcDashboard, 'index']);
 
@@ -95,6 +97,10 @@ $router->post('/dispatch/runs/@id:[0-9]+/delete', [$bngrcDispatch, 'deleteRun'])
 // Recap
 $router->get('/recap', [$bngrcRecap, 'index']);
 $router->get('/recap/data', [$bngrcRecap, 'data']);
+
+// Paramètres
+$router->get('/settings', [$bngrcSettings, 'index']);
+$router->post('/settings', [$bngrcSettings, 'savePost']);
 
 // Ville dashboard détail
 $router->get('/villes/@id:[0-9]+/dashboard', [$bngrcVilles, 'dashboard']);

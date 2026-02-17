@@ -134,6 +134,19 @@ $currentPage = trim($uri, '/');
 						<span class="nav-link-text ms-1">Articles</span>
 					</a>
 				</li>
+
+				<!-- Section administration -->
+				<li class="nav-item mt-3">
+					<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Administration</h6>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link <?= str_starts_with($currentPage, 'settings') ? 'active' : '' ?>" href="/settings">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							<i class="bi bi-gear text-secondary text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Paramètres</span>
+					</a>
+				</li>
 			</ul>
 		</div>
 
