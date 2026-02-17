@@ -110,7 +110,7 @@ $flashMap = [
 		<div class="card">
 			<div class="card-header pb-0">
 				<h6><i class="fas fa-random me-2 text-primary"></i> Lancer un dispatch</h6>
-				<p class="text-sm text-muted mb-0">Le moteur répartit automatiquement les dons vers les besoins par article, en suivant l'ordre chronologique (date ASC, id ASC).</p>
+				<p class="text-sm text-muted mb-0">Choisissez la méthode de répartition puis lancez le dispatch.</p>
 			</div>
 			<div class="card-body">
 				<?php if ($stats['dons_restant'] === 0 || $stats['besoins_restant'] === 0): ?>
@@ -126,17 +126,62 @@ $flashMap = [
 					</div>
 				<?php endif; ?>
 
-				<form method="post" action="/dispatch/run" class="row g-3 align-items-end">
-					<div class="col-md-8">
+				<?php $isDisabled = ($stats['dons_restant'] === 0 || $stats['besoins_restant'] === 0); ?>
+
+				<form method="post" action="/dispatch/run" id="dispatchForm">
+					<!-- Note -->
+					<div class="mb-3">
 						<label class="form-label text-xs text-uppercase font-weight-bold">Note (optionnelle)</label>
 						<input type="text" name="note" class="form-control" placeholder="Ex: Dispatch du jour, Test allocation…" maxlength="255">
 					</div>
-					<div class="col-md-4">
-						<button type="submit" class="btn bg-gradient-primary w-100"
-								<?= ($stats['dons_restant'] === 0 || $stats['besoins_restant'] === 0) ? 'disabled' : '' ?>>
-							<i class="fas fa-play me-1"></i> Lancer le dispatch
-						</button>
+
+					<!-- Choix de la méthode — 3 cartes cliquables -->
+					<input type="hidden" name="methode" id="methodeInput" value="fifo">
+
+					<label class="form-label text-xs text-uppercase font-weight-bold mb-2">Méthode de répartition</label>
+					<div class="row g-3 mb-4">
+						<!-- FIFO -->
+						<div class="col-md-4">
+							<div class="card border border-2 border-primary shadow-sm method-card active" data-method="fifo" style="cursor:pointer;">
+								<div class="card-body text-center p-3">
+									<div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle mx-auto mb-2" style="width:48px; height:48px;">
+										<i class="fas fa-sort-amount-down text-lg text-white" aria-hidden="true"></i>
+									</div>
+									<h6 class="text-sm font-weight-bolder mb-1">Ancienneté (FIFO)</h6>
+									<p class="text-xs text-muted mb-0">Premier arrivé, premier servi. Les besoins les plus anciens reçoivent en premier.</p>
+								</div>
+							</div>
+						</div>
+						<!-- Smallest -->
+						<div class="col-md-4">
+							<div class="card border border-2 border-light shadow-sm method-card" data-method="smallest" style="cursor:pointer;">
+								<div class="card-body text-center p-3">
+									<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle mx-auto mb-2" style="width:48px; height:48px;">
+										<i class="fas fa-sort-numeric-down text-lg text-white" aria-hidden="true"></i>
+									</div>
+									<h6 class="text-sm font-weight-bolder mb-1">Plus petit d'abord</h6>
+									<p class="text-xs text-muted mb-0">Les besoins les plus petits (en quantité) sont satisfaits en priorité.</p>
+								</div>
+							</div>
+						</div>
+						<!-- Proportional -->
+						<div class="col-md-4">
+							<div class="card border border-2 border-light shadow-sm method-card" data-method="proportional" style="cursor:pointer;">
+								<div class="card-body text-center p-3">
+									<div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle mx-auto mb-2" style="width:48px; height:48px;">
+										<i class="fas fa-balance-scale text-lg text-white" aria-hidden="true"></i>
+									</div>
+									<h6 class="text-sm font-weight-bolder mb-1">Proportionnel</h6>
+									<p class="text-xs text-muted mb-0">Chaque besoin reçoit une part proportionnelle à sa quantité restante.</p>
+								</div>
+							</div>
+						</div>
 					</div>
+
+					<button type="submit" class="btn bg-gradient-primary w-100"
+							<?= $isDisabled ? 'disabled' : '' ?>>
+						<i class="fas fa-play me-1"></i> Lancer le dispatch
+					</button>
 				</form>
 			</div>
 		</div>
@@ -154,6 +199,22 @@ $flashMap = [
 						<i class="fas fa-trash-alt me-1"></i> Tout réinitialiser
 					</button>
 				</form>
+
+				<!-- Légende méthodes -->
+				<hr class="horizontal dark my-3">
+				<h6 class="text-xs text-uppercase font-weight-bold opacity-6 mb-2">Aide — Méthodes</h6>
+				<div class="mb-2">
+					<span class="badge bg-gradient-primary me-1">FIFO</span>
+					<span class="text-xs">Date demande ↑ — premier arrivé, premier servi</span>
+				</div>
+				<div class="mb-2">
+					<span class="badge bg-gradient-success me-1">Plus petit</span>
+					<span class="text-xs">Quantité ↑ — petit besoins servis d'abord</span>
+				</div>
+				<div class="mb-0">
+					<span class="badge bg-gradient-info me-1">Proportionnel</span>
+					<span class="text-xs">Répartition au prorata des restes</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -179,6 +240,7 @@ $flashMap = [
 								<tr>
 									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Run #</th>
 									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Méthode</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Allocations</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dons</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Besoins</th>
@@ -196,6 +258,21 @@ $flashMap = [
 									</td>
 									<td>
 										<span class="text-xs font-weight-bold"><?= date('d/m/Y H:i', strtotime($r['ran_at'])) ?></span>
+									</td>
+									<td class="align-middle text-center">
+										<?php
+											$mLabel = match($r['methode'] ?? 'fifo') {
+												'smallest'      => 'Plus petit',
+												'proportional'  => 'Proportionnel',
+												default         => 'FIFO',
+											};
+											$mBadge = match($r['methode'] ?? 'fifo') {
+												'smallest'      => 'bg-gradient-success',
+												'proportional'  => 'bg-gradient-info',
+												default         => 'bg-gradient-primary',
+											};
+										?>
+										<span class="badge <?= $mBadge ?>"><?= $mLabel ?></span>
 									</td>
 									<td class="align-middle text-center">
 										<span class="text-sm font-weight-bold"><?= $r['nb_allocations'] ?></span>
@@ -224,6 +301,25 @@ $flashMap = [
 		</div>
 	</div>
 </div>
+
+<script nonce="<?= \Flight::get('csp_nonce') ?>">
+document.querySelectorAll('.method-card').forEach(card => {
+	card.addEventListener('click', () => {
+		// Retirer la sélection de toutes les cartes
+		document.querySelectorAll('.method-card').forEach(c => {
+			c.classList.remove('active', 'border-primary', 'border-success', 'border-info');
+			c.classList.add('border-light');
+		});
+		// Activer la carte cliquée
+		const method = card.dataset.method;
+		const colorMap = { fifo: 'border-primary', smallest: 'border-success', proportional: 'border-info' };
+		card.classList.add('active', colorMap[method]);
+		card.classList.remove('border-light');
+		// Mettre à jour le champ caché
+		document.getElementById('methodeInput').value = method;
+	});
+});
+</script>
 
 <?php
 $content = ob_get_clean();

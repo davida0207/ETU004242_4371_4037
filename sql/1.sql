@@ -72,32 +72,3 @@ CREATE TABLE IF NOT EXISTS bngrc_allocations (
   FOREIGN KEY (besoin_id) REFERENCES bngrc_besoins(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE IF NOT EXISTS bngrc_settings (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  setting_key VARCHAR(100) NOT NULL UNIQUE,
-  setting_value VARCHAR(500) NOT NULL,
-  label VARCHAR(200) NULL,
-  updated_at TIMESTAMP NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Valeur par défaut des frais d'achat
-INSERT INTO bngrc_settings (setting_key, setting_value, label) VALUES
-('purchase_fee_percent', '10', 'Frais d\'achat (%)');
-
-CREATE TABLE IF NOT EXISTS bngrc_achats (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  besoin_id INT NULL,
-  ville_id INT NOT NULL,
-  article_id INT NOT NULL,
-  quantite DECIMAL(15,2) NOT NULL,
-  montant_base DECIMAL(15,2) NOT NULL,
-  frais_percent DECIMAL(5,2) NOT NULL,
-  montant_total DECIMAL(15,2) NOT NULL,
-  date_achat DATE NOT NULL,
-  note VARCHAR(500) NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (besoin_id) REFERENCES bngrc_besoins(id),
-  FOREIGN KEY (ville_id) REFERENCES bngrc_villes(id),
-  FOREIGN KEY (article_id) REFERENCES bngrc_articles(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

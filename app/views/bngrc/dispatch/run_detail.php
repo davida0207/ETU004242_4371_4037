@@ -75,6 +75,21 @@ foreach ($allocations as $a) {
 						<p class="text-sm mb-2"><strong>Note :</strong><br><?= htmlspecialchars($run['note'] ?? '—') ?></p>
 					</div>
 					<div class="col-md-6">
+						<p class="text-sm mb-2"><strong>Méthode :</strong><br>
+							<?php
+								$mLabel = match($run['methode'] ?? 'fifo') {
+									'smallest'      => 'Plus petit d\'abord',
+									'proportional'  => 'Proportionnel',
+									default         => 'Ancienneté (FIFO)',
+								};
+								$mBadge = match($run['methode'] ?? 'fifo') {
+									'smallest'      => 'bg-gradient-success',
+									'proportional'  => 'bg-gradient-info',
+									default         => 'bg-gradient-primary',
+								};
+							?>
+							<span class="badge <?= $mBadge ?> badge-lg"><?= $mLabel ?></span>
+						</p>
 						<p class="text-sm mb-2"><strong>Allocations créées :</strong><br><span class="text-lg font-weight-bold"><?= $run['nb_allocations'] ?></span></p>
 						<p class="text-sm mb-2"><strong>Dons traités / Besoins couverts :</strong><br><?= $run['nb_dons'] ?> dons → <?= $run['nb_besoins'] ?> besoins</p>
 					</div>
@@ -132,10 +147,8 @@ foreach ($allocations as $a) {
 						<thead>
 							<tr>
 								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Don</th>
-								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Source</th>
 								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">→ Besoin</th>
-								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ville (Région)</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantité</th>
+								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Attribué</th>
 								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Valeur</th>
 							</tr>
 						</thead>
@@ -143,19 +156,24 @@ foreach ($allocations as $a) {
 							<?php foreach ($g['rows'] as $a): ?>
 							<tr>
 								<td>
-									<div class="d-flex px-3 py-1">
+									<div class="d-flex flex-column px-3 py-1">
 										<a href="/dons/<?= $a['don_id'] ?>" class="text-xs font-weight-bold text-primary">Don #<?= $a['don_id'] ?></a>
+										<span class="text-xxs"><?= htmlspecialchars($a['don_source'] ?? '—') ?></span>
+										<span class="text-xxs text-muted"><?= fmtQtyRd((float)$a['don_quantite']) ?> <?= htmlspecialchars($a['unite']) ?> · <?= date('d/m/Y', strtotime($a['date_don'])) ?></span>
+										<?php if (!empty($a['don_note'])): ?>
+											<span class="text-xxs text-muted fst-italic"><?= htmlspecialchars($a['don_note']) ?></span>
+										<?php endif; ?>
 									</div>
 								</td>
 								<td>
-									<span class="text-xs"><?= htmlspecialchars($a['don_source'] ?? '—') ?></span>
-								</td>
-								<td>
-									<a href="/besoins/<?= $a['besoin_id'] ?>" class="text-xs font-weight-bold text-danger">Besoin #<?= $a['besoin_id'] ?></a>
-								</td>
-								<td>
-									<span class="text-xs font-weight-bold"><?= htmlspecialchars($a['ville']) ?></span>
-									<span class="text-xs text-muted">(<?= htmlspecialchars($a['region']) ?>)</span>
+									<div class="d-flex flex-column py-1">
+										<a href="/besoins/<?= $a['besoin_id'] ?>" class="text-xs font-weight-bold text-danger">Besoin #<?= $a['besoin_id'] ?></a>
+										<span class="text-xxs font-weight-bold"><?= htmlspecialchars($a['ville']) ?> <span class="text-muted font-weight-normal">(<?= htmlspecialchars($a['region']) ?>)</span></span>
+										<span class="text-xxs text-muted"><?= fmtQtyRd((float)$a['besoin_quantite']) ?> <?= htmlspecialchars($a['unite']) ?> · <?= date('d/m/Y', strtotime($a['date_besoin'])) ?></span>
+										<?php if (!empty($a['besoin_note'])): ?>
+											<span class="text-xxs text-muted fst-italic"><?= htmlspecialchars($a['besoin_note']) ?></span>
+										<?php endif; ?>
+									</div>
 								</td>
 								<td class="align-middle text-center">
 									<span class="text-sm font-weight-bold"><?= fmtQtyRd((float)$a['quantite']) ?></span>

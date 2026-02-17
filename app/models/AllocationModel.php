@@ -55,11 +55,16 @@ class AllocationModel
 
 	/**
 	 * Besoins ouverts (non totalement couverts, non supprimés) pour un article donné
-	 * Triés par date_besoin ASC, id ASC
+	 * Triés par date_besoin ASC, id ASC  (méthode FIFO)
 	 */
-	public function openBesoinsByArticle(int $articleId): array
+	public function openBesoinsByArticle(int $articleId, string $orderMode = 'fifo'): array
 	{
-		$st = $this->db->prepare('
+		$orderClause = match ($orderMode) {
+			'smallest' => 'ORDER BY reste_besoin ASC, b.id ASC',
+			default    => 'ORDER BY b.date_besoin ASC, b.id ASC',  // fifo + proportional
+		};
+
+		$st = $this->db->prepare("
 			SELECT b.id,
 			       b.ville_id,
 			       b.quantite,
@@ -75,8 +80,8 @@ class AllocationModel
 			WHERE b.article_id = ? AND b.deleted_at IS NULL
 			GROUP BY b.id, b.ville_id, b.quantite, b.date_besoin, v.nom, r.nom
 			HAVING reste_besoin > 0
-			ORDER BY b.date_besoin ASC, b.id ASC
-		');
+			{$orderClause}
+		");
 		$st->execute([$articleId]);
 		return $st->fetchAll(PDO::FETCH_ASSOC);
 	}

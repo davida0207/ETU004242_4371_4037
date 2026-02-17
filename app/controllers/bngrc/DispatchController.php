@@ -26,11 +26,18 @@ class DispatchController
 	/** POST — Exécute un dispatch complet */
 	public function run(): void
 	{
-		$note = trim((string)(Flight::request()->data->note ?? ''));
+		$note    = trim((string)(Flight::request()->data->note ?? ''));
+		$methode = (string)(Flight::request()->data->methode ?? 'fifo');
+
+		// Valider la méthode
+		if (!in_array($methode, DispatchService::METHODS, true)) {
+			$methode = 'fifo';
+		}
+
 		$service = new DispatchService(Flight::db());
 
 		try {
-			$result = $service->runDispatch($note ?: null);
+			$result = $service->runDispatch($methode, $note ?: null);
 
 			if ($result['nb_allocations'] === 0) {
 				Flight::redirect('/dispatch?flash=empty');
@@ -79,7 +86,7 @@ class DispatchController
 			return;
 		}
 
-		$allocations = $runModel->allocationsForRun($id);
+		$allocations = $runModel->allocationsForRun($id, $run['methode'] ?? 'fifo');
 
 		Flight::render('bngrc/dispatch/run_detail', [
 			'run'         => $run,

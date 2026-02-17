@@ -9,16 +9,17 @@ use PDO;
 /**
  * Moteur de répartition des dons vers les besoins.
  *
- * Algorithme :
- *  1. Trier les dons par date_don ASC, id ASC
- *  2. Pour chaque don ayant un reste > 0, trouver les besoins ouverts du MÊME article
- *     triés par date_besoin ASC, id ASC
- *  3. Créer une allocation de min(reste_don, reste_besoin)
- *  4. Le tout dans un dispatch_run, encapsulé dans une transaction SQL
+ * Trois méthodes disponibles :
+ *  - fifo          : Premier arrivé (date_besoin ASC) → premier servi
+ *  - smallest      : Plus petit besoin d'abord (reste_besoin ASC)
+ *  - proportional  : Répartition proportionnelle au prorata des restes
  */
 class DispatchService
 {
 	private PDO $db;
+
+	/** Méthodes autorisées */
+	public const METHODS = ['fifo', 'smallest', 'proportional'];
 
 	public function __construct(PDO $db)
 	{
@@ -26,22 +27,26 @@ class DispatchService
 	}
 
 	/**
-	 * Lance un dispatch complet.
+	 * Lance un dispatch complet selon la méthode choisie.
 	 *
-	 * @param string|null $note Note optionnelle pour le run
+	 * @param string      $methode  fifo | smallest | proportional
+	 * @param string|null $note     Note optionnelle pour le run
 	 * @return array{run_id: int, nb_allocations: int, details: array}
-	 * @throws \RuntimeException si aucune allocation créée
 	 */
-	public function runDispatch(?string $note = null): array
+	public function runDispatch(string $methode = 'fifo', ?string $note = null): array
 	{
+		if (!in_array($methode, self::METHODS, true)) {
+			$methode = 'fifo';
+		}
+
 		$allocModel = new AllocationModel($this->db);
 		$runModel   = new DispatchRunModel($this->db);
 
 		$this->db->beginTransaction();
 
 		try {
-			// 1. Créer le run
-			$runId = $runModel->create($note);
+			// 1. Créer le run (avec la méthode)
+			$runId = $runModel->create($note, $methode);
 
 			// 2. Récupérer les dons non totalement attribués (date_don ASC, id ASC)
 			$dons = $allocModel->unsatisfiedDons();
@@ -53,32 +58,35 @@ class DispatchService
 				$resteDon = (float)$don['reste_don'];
 				if ($resteDon <= 0) continue;
 
-				// 3. Besoins ouverts pour le même article (date_besoin ASC, id ASC)
-				$besoins = $allocModel->openBesoinsByArticle((int)$don['article_id']);
+				// 3. Besoins ouverts pour le même article (tri selon méthode)
+				$besoins = $allocModel->openBesoinsByArticle(
+					(int)$don['article_id'],
+					$methode
+				);
 
-				foreach ($besoins as $besoin) {
-					if ($resteDon <= 0) break;
+				if (empty($besoins)) continue;
 
-					$resteBesoin = (float)$besoin['reste_besoin'];
-					if ($resteBesoin <= 0) continue;
+				// 4. Distribuer selon la méthode
+				if ($methode === 'proportional') {
+					$allocs = $this->distributeProportional($resteDon, $besoins);
+				} else {
+					// fifo et smallest : même algo séquentiel, seul l'ordre change
+					$allocs = $this->distributeSequential($resteDon, $besoins);
+				}
 
-					// 4. Quantité à allouer = min(reste_don, reste_besoin)
-					$qty = min($resteDon, $resteBesoin);
-
-					$allocModel->create($runId, (int)$don['id'], (int)$besoin['id'], $qty);
+				foreach ($allocs as $al) {
+					$allocModel->create($runId, (int)$don['id'], (int)$al['besoin_id'], $al['qty']);
 					$nbAllocations++;
 
 					$details[] = [
 						'don_id'    => (int)$don['id'],
-						'besoin_id' => (int)$besoin['id'],
+						'besoin_id' => (int)$al['besoin_id'],
 						'article'   => $don['libelle'],
-						'ville'     => $besoin['ville'],
-						'region'    => $besoin['region'],
-						'quantite'  => $qty,
+						'ville'     => $al['ville'],
+						'region'    => $al['region'],
+						'quantite'  => $al['qty'],
 						'unite'     => $don['unite'],
 					];
-
-					$resteDon -= $qty;
 				}
 			}
 			unset($don);
@@ -95,6 +103,102 @@ class DispatchService
 			$this->db->rollBack();
 			throw new \RuntimeException('Erreur lors du dispatch : ' . $e->getMessage(), 0, $e);
 		}
+	}
+
+	/* =====================================================================
+	 * Stratégie séquentielle (FIFO ou Smallest-first)
+	 * On remplit les besoins un par un dans l'ordre fourni.
+	 * ================================================================== */
+	private function distributeSequential(float $resteDon, array $besoins): array
+	{
+		$allocs = [];
+		foreach ($besoins as $b) {
+			if ($resteDon <= 0) break;
+
+			$resteBesoin = (float)$b['reste_besoin'];
+			if ($resteBesoin <= 0) continue;
+
+			$qty = min($resteDon, $resteBesoin);
+			$allocs[] = [
+				'besoin_id' => (int)$b['id'],
+				'ville'     => $b['ville'],
+				'region'    => $b['region'],
+				'qty'       => $qty,
+			];
+			$resteDon -= $qty;
+		}
+		return $allocs;
+	}
+
+	/* =====================================================================
+	 * Stratégie proportionnelle
+	 * On répartit le don au prorata du reste de chaque besoin.
+	 * Exemple : don = 100, besoin A reste 200, besoin B reste 300
+	 *   total = 500  →  A reçoit 100*200/500 = 40, B reçoit 100*300/500 = 60
+	 * ================================================================== */
+	private function distributeProportional(float $resteDon, array $besoins): array
+	{
+		// Calculer le total des restes
+		$totalReste = 0.0;
+		foreach ($besoins as $b) {
+			$totalReste += (float)$b['reste_besoin'];
+		}
+
+		if ($totalReste <= 0) return [];
+
+		// Si le don couvre tout, on donne à chacun son reste complet
+		if ($resteDon >= $totalReste) {
+			$allocs = [];
+			foreach ($besoins as $b) {
+				$r = (float)$b['reste_besoin'];
+				if ($r <= 0) continue;
+				$allocs[] = [
+					'besoin_id' => (int)$b['id'],
+					'ville'     => $b['ville'],
+					'region'    => $b['region'],
+					'qty'       => $r,
+				];
+			}
+			return $allocs;
+		}
+
+		// Répartition proportionnelle avec arrondi
+		$allocs     = [];
+		$distribue  = 0.0;
+		$count      = count($besoins);
+		$idx        = 0;
+
+		foreach ($besoins as $b) {
+			$idx++;
+			$r = (float)$b['reste_besoin'];
+			if ($r <= 0) continue;
+
+			// Part proportionnelle
+			$part = ($r / $totalReste) * $resteDon;
+
+			// Arrondir à 2 décimales
+			$part = round($part, 2);
+
+			// Le dernier reçoit ce qui reste (évite erreurs d'arrondi)
+			if ($idx === $count) {
+				$part = round($resteDon - $distribue, 2);
+			}
+
+			// Ne pas dépasser le reste du besoin
+			$part = min($part, $r);
+
+			if ($part > 0) {
+				$allocs[] = [
+					'besoin_id' => (int)$b['id'],
+					'ville'     => $b['ville'],
+					'region'    => $b['region'],
+					'qty'       => $part,
+				];
+				$distribue += $part;
+			}
+		}
+
+		return $allocs;
 	}
 
 	/**

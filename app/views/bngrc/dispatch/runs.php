@@ -51,6 +51,7 @@ function fmtQtyD(float $v): string {
 								<tr>
 									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Run #</th>
 									<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Date d'exécution</th>
+									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Méthode</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Allocations</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quantité totale</th>
 									<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Dons traités</th>
@@ -69,6 +70,21 @@ function fmtQtyD(float $v): string {
 									</td>
 									<td>
 										<span class="text-xs font-weight-bold"><?= date('d/m/Y H:i:s', strtotime($r['ran_at'])) ?></span>
+									</td>
+									<td class="align-middle text-center">
+										<?php
+											$mLabel = match($r['methode'] ?? 'fifo') {
+												'smallest'      => 'Plus petit',
+												'proportional'  => 'Proportionnel',
+												default         => 'FIFO',
+											};
+											$mBadge = match($r['methode'] ?? 'fifo') {
+												'smallest'      => 'bg-gradient-success',
+												'proportional'  => 'bg-gradient-info',
+												default         => 'bg-gradient-primary',
+											};
+										?>
+										<span class="badge <?= $mBadge ?>"><?= $mLabel ?></span>
 									</td>
 									<td class="align-middle text-center">
 										<span class="text-sm font-weight-bold"><?= $r['nb_allocations'] ?></span>
