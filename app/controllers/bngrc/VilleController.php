@@ -2,6 +2,7 @@
 
 namespace app\controllers\bngrc;
 
+use app\models\BesoinModel;
 use app\models\RegionModel;
 use app\models\VilleModel;
 use Flight;
@@ -150,5 +151,37 @@ class VilleController
 		} catch (PDOException $e) {
 			Flight::redirect('/villes?flash=blocked');
 		}
+	}
+
+	/** Dashboard détail d'une ville */
+	public function dashboard(int $id): void
+	{
+		$db = Flight::db();
+		$villeModel = new VilleModel($db);
+		$ville = $villeModel->getById($id);
+
+		if (!$ville) {
+			Flight::notFound();
+			return;
+		}
+
+		$regionModel = new RegionModel($db);
+		$region = null;
+		$regions = $regionModel->listAll();
+		foreach ($regions as $r) {
+			if ((int)$r['id'] === (int)$ville['region_id']) {
+				$region = $r;
+				break;
+			}
+		}
+
+		$besoinModel = new BesoinModel($db);
+		$besoins = $besoinModel->listWithFilters(['ville_id' => $id]);
+
+		Flight::render('bngrc/villes/dashboard', [
+			'ville'   => $ville,
+			'region'  => $region,
+			'besoins' => $besoins,
+		]);
 	}
 }

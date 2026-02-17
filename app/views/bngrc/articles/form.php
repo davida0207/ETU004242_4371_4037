@@ -8,50 +8,62 @@ $errors = $errors ?? ['categorie' => '', 'libelle' => '', 'unite' => '', 'prix_u
 $action = $mode === 'edit' ? '/articles/' . (int)($article['id'] ?? 0) . '/edit' : '/articles/add';
 ?>
 
-<div class="card">
-	<p><a class="btn btn-secondary" href="/articles">← Retour</a></p>
+<div class="row">
+	<div class="col-lg-8">
+		<div class="card">
+			<div class="card-header pb-0">
+				<div class="d-flex align-items-center justify-content-between">
+					<h6><?= $title ?></h6>
+					<a class="btn btn-outline-secondary btn-sm" href="/articles">← Retour</a>
+				</div>
+			</div>
+			<div class="card-body">
+				<form method="post" action="<?= htmlspecialchars($action) ?>">
+					<div class="form-group">
+						<label class="form-control-label">Catégorie</label>
+						<select class="form-select" name="categorie">
+							<?php foreach (($categories ?? []) as $key => $label): ?>
+								<option value="<?= htmlspecialchars((string)$key) ?>" <?= ((string)($article['categorie'] ?? '') === (string)$key) ? 'selected' : '' ?>>
+									<?= htmlspecialchars((string)$label) ?>
+								</option>
+							<?php endforeach; ?>
+						</select>
+						<?php if (!empty($errors['categorie'])): ?><small class="text-danger"><?= htmlspecialchars((string)$errors['categorie']) ?></small><?php endif; ?>
+					</div>
 
-	<form method="post" action="<?= htmlspecialchars($action) ?>">
-		<label>Catégorie</label>
-		<select class="input" name="categorie">
-			<?php foreach (($categories ?? []) as $key => $label): ?>
-				<option value="<?= htmlspecialchars((string)$key) ?>" <?= ((string)($article['categorie'] ?? '') === (string)$key) ? 'selected' : '' ?>>
-					<?= htmlspecialchars((string)$label) ?>
-				</option>
-			<?php endforeach; ?>
-		</select>
-		<?php if (!empty($errors['categorie'])): ?><div class="error"><?= htmlspecialchars((string)$errors['categorie']) ?></div><?php endif; ?>
-	</div>
+					<div class="form-group">
+						<label class="form-control-label">Libellé</label>
+						<input class="form-control" type="text" name="libelle" value="<?= htmlspecialchars((string)($article['libelle'] ?? '')) ?>">
+						<?php if (!empty($errors['libelle'])): ?><small class="text-danger"><?= htmlspecialchars((string)$errors['libelle']) ?></small><?php endif; ?>
+					</div>
 
-	<div class="form-group">
-		<label>Libellé</label>
-		<input class="input" type="text" name="libelle" value="<?= htmlspecialchars((string)($article['libelle'] ?? '')) ?>">
-		<?php if (!empty($errors['libelle'])): ?><div class="error"><?= htmlspecialchars((string)$errors['libelle']) ?></div><?php endif; ?>
-	</div>
+					<div class="form-group">
+						<label class="form-control-label">Unité</label>
+						<input class="form-control" type="text" name="unite" value="<?= htmlspecialchars((string)($article['unite'] ?? '')) ?>">
+						<?php if (!empty($errors['unite'])): ?><small class="text-danger"><?= htmlspecialchars((string)$errors['unite']) ?></small><?php endif; ?>
+					</div>
 
-	<div class="form-group">
-		<label>Unité</label>
-		<input class="input" type="text" name="unite" value="<?= htmlspecialchars((string)($article['unite'] ?? '')) ?>">
-		<?php if (!empty($errors['unite'])): ?><div class="error"><?= htmlspecialchars((string)$errors['unite']) ?></div><?php endif; ?>
-	</div>
+					<div class="form-group">
+						<label class="form-control-label">Prix unitaire</label>
+						<input class="form-control" type="number" step="0.01" name="prix_unitaire" value="<?= htmlspecialchars((string)($article['prix_unitaire'] ?? '0')) ?>">
+						<?php if (!empty($errors['prix_unitaire'])): ?><small class="text-danger"><?= htmlspecialchars((string)$errors['prix_unitaire']) ?></small><?php endif; ?>
+					</div>
 
-	<div class="form-group">
-		<label>Prix unitaire</label>
-		<input class="input" type="number" step="0.01" name="prix_unitaire" value="<?= htmlspecialchars((string)($article['prix_unitaire'] ?? '0')) ?>">
-		<?php if (!empty($errors['prix_unitaire'])): ?><div class="error"><?= htmlspecialchars((string)$errors['prix_unitaire']) ?></div><?php endif; ?>
-	</div>
+					<div class="form-group">
+						<label class="form-control-label">Actif</label>
+						<select class="form-select" name="actif">
+							<option value="1" <?= ((int)($article['actif'] ?? 1) === 1) ? 'selected' : '' ?>>Oui</option>
+							<option value="0" <?= ((int)($article['actif'] ?? 1) === 0) ? 'selected' : '' ?>>Non</option>
+						</select>
+					</div>
 
-	<div class="form-group">
-		<label>Actif</label>
-		<select class="input" name="actif">
-			<option value="1" <?= ((int)($article['actif'] ?? 1) === 1) ? 'selected' : '' ?>>Oui</option>
-			<option value="0" <?= ((int)($article['actif'] ?? 1) === 0) ? 'selected' : '' ?>>Non</option>
-		</select>
-
-		<div class="form-group">
-			<button class="btn btn-primary" type="submit">Enregistrer</button>
+					<div class="form-group">
+						<button class="btn bg-gradient-primary" type="submit">Enregistrer</button>
+					</div>
+				</form>
+			</div>
 		</div>
-	</form>
+	</div>
 </div>
 
 <?php

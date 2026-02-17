@@ -1,0 +1,30 @@
+/* ==============================================
+   bngrc-override.css — Utilitaires BNGRC
+   Uniquement des classes utilitaires manquantes
+   dans Argon Dashboard
+   ============================================== */
+
+/* --- Formulaires filtres en ligne --- */
+.filters-form {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	width: 100%;
+}
+.inline-form { display: inline; }
+
+/* --- Cellules d'actions (boutons côte à côte) --- */
+.actions-cell {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+.actions-cell form { display: inline; }
+
+/* --- Police mono pour les montants --- */
+.font-mono {
+	font-family: 'Courier New', monospace;
+	font-weight: 600;
+}

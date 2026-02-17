@@ -6,6 +6,7 @@ use app\controllers\WelcomeController;
 use app\controllers\bngrc\ArticleController as BngrcArticleController;
 use app\controllers\bngrc\BesoinController as BngrcBesoinController;
 use app\controllers\bngrc\DashboardController as BngrcDashboardController;
+use app\controllers\bngrc\DispatchController as BngrcDispatchController;
 use app\controllers\bngrc\DonController as BngrcDonController;
 use app\controllers\bngrc\RegionController as BngrcRegionController;
 use app\controllers\bngrc\VilleController as BngrcVilleController;
@@ -33,6 +34,7 @@ $bngrcVilles = new BngrcVilleController();
 $bngrcArticles = new BngrcArticleController();
 $bngrcBesoins = new BngrcBesoinController();
 $bngrcDons = new BngrcDonController();
+$bngrcDispatch = new BngrcDispatchController();
 
 $router->get('/bngrc/dashboard', [$bngrcDashboard, 'index']);
 
@@ -73,6 +75,19 @@ $router->get('/dons/@id:[0-9]+/edit', [$bngrcDons, 'editForm']);
 $router->post('/dons/@id:[0-9]+/edit', [$bngrcDons, 'editPost']);
 $router->post('/dons/@id:[0-9]+/delete', [$bngrcDons, 'deletePost']);
 
+// Dispatch simulation
+$router->get('/dispatch', [$bngrcDispatch, 'index']);
+$router->post('/dispatch/run', [$bngrcDispatch, 'run']);
+$router->post('/dispatch/reset', [$bngrcDispatch, 'reset']);
+$router->get('/dispatch/runs', [$bngrcDispatch, 'runs']);
+$router->get('/dispatch/runs/@id:[0-9]+', [$bngrcDispatch, 'showRun']);
+$router->post('/dispatch/runs/@id:[0-9]+/delete', [$bngrcDispatch, 'deleteRun']);
 
-	
+// Ville dashboard détail
+$router->get('/villes/@id:[0-9]+/dashboard', [$bngrcVilles, 'dashboard']);
+
+$router->get('/message', [$Welcome_Controller, 'messages']);
+$router->get('/inscription', function() { Flight::redirect('/register'); });
+$router->get('/logout', [$Welcome_Controller, 'logout']);
+
 }, [ SecurityHeadersMiddleware::class ]);

@@ -143,9 +143,13 @@ class BesoinModel
 				al.created_at,
 				d.id AS don_id,
 				d.date_don,
-				d.source
+				d.source,
+				dr.id AS dispatch_run_id,
+				dr.ran_at AS dispatch_ran_at,
+				dr.note AS dispatch_note
 			FROM bngrc_allocations al
 			JOIN bngrc_dons d ON d.id = al.don_id
+			LEFT JOIN bngrc_dispatch_runs dr ON dr.id = al.dispatch_run_id
 			WHERE al.besoin_id=?
 			ORDER BY d.date_don ASC, d.id ASC, al.id ASC
 		');

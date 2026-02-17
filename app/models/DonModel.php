@@ -129,11 +129,18 @@ class DonModel
 				b.id AS besoin_id,
 				b.date_besoin,
 				v.nom AS ville,
-				r.nom AS region
+				r.nom AS region,
+				a.libelle AS article,
+				a.unite,
+				dr.id AS dispatch_run_id,
+				dr.ran_at AS dispatch_ran_at,
+				dr.note AS dispatch_note
 			FROM bngrc_allocations al
 			JOIN bngrc_besoins b ON b.id = al.besoin_id
 			JOIN bngrc_villes v ON v.id = b.ville_id
 			JOIN bngrc_regions r ON r.id = v.region_id
+			JOIN bngrc_articles a ON a.id = b.article_id
+			LEFT JOIN bngrc_dispatch_runs dr ON dr.id = al.dispatch_run_id
 			WHERE al.don_id=?
 			ORDER BY b.date_besoin ASC, b.id ASC, al.id ASC
 		');
