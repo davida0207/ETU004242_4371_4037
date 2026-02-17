@@ -12,9 +12,9 @@ function fmtQty(float $v): string {
 $nonce     = \Flight::get('csp_nonce');
 $flash     = $flash ?? '';
 $flashMap  = [
-	'created' => ['success', 'Besoin enregistré avec succès.', 'ni ni-check-bold'],
-	'deleted' => ['success', 'Besoin supprimé.', 'ni ni-check-bold'],
-	'blocked' => ['warning', 'Suppression impossible : des allocations existent pour ce besoin.', 'ni ni-bell-55'],
+	'created' => ['success', 'Besoin enregistré avec succès.', 'bi bi-check-circle-fill'],
+	'deleted' => ['success', 'Besoin supprimé.', 'bi bi-check-circle-fill'],
+	'blocked' => ['warning', 'Suppression impossible : des allocations existent pour ce besoin.', 'bi bi-bell-fill'],
 ];
 $filters    = $filters ?? [];
 $rows       = $rows ?? [];
@@ -57,7 +57,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-							<i class="ni ni-bullet-list-67 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-list-ul text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -77,7 +77,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-							<i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-check-circle-fill text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -96,7 +96,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-							<i class="ni ni-fat-remove text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-x-circle-fill text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -109,7 +109,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 <div class="card mb-4">
 	<div class="card-header pb-0">
 		<div class="d-flex justify-content-between align-items-center">
-			<h6 class="mb-0"><i class="ni ni-zoom-split-in text-sm me-1"></i> Filtres</h6>
+			<h6 class="mb-0"><i class="bi bi-funnel text-sm me-1"></i> Filtres</h6>
 			<a class="btn btn-sm bg-gradient-primary mb-0" href="/besoins/add"><i class="fas fa-plus me-1"></i> Ajouter un besoin</a>
 		</div>
 	</div>
@@ -179,7 +179,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 	<div class="card-body px-0 pt-0 pb-2">
 		<?php if (empty($rows)): ?>
 			<div class="text-center py-5">
-				<i class="ni ni-bullet-list-67 text-secondary" style="font-size:3rem;"></i>
+				<i class="bi bi-list-ul text-secondary" style="font-size:3rem;"></i>
 				<p class="text-sm text-secondary mt-3">Aucun besoin trouvé.</p>
 				<a href="/besoins/add" class="btn btn-sm bg-gradient-primary">Créer un premier besoin</a>
 			</div>
@@ -230,7 +230,7 @@ $totalReste = $totalBesoins - $totalCouvert;
 						<td>
 							<div class="d-flex px-2 py-1">
 								<div class="icon icon-shape icon-sm me-2 bg-gradient-dark shadow text-center rounded-circle">
-									<i class="ni ni-building text-white text-xs" aria-hidden="true"></i>
+									<i class="bi bi-building text-white text-xs" aria-hidden="true"></i>
 								</div>
 								<div class="d-flex flex-column justify-content-center">
 									<h6 class="mb-0 text-sm"><?= htmlspecialchars((string)$b['ville']) ?></h6>

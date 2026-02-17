@@ -50,7 +50,7 @@ $rawAttribue = json_encode($chartAttribue);
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
-							<i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-cash-coin text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -75,7 +75,7 @@ $rawAttribue = json_encode($chartAttribue);
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
-							<i class="ni ni-basket text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-basket3 text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -105,7 +105,7 @@ $rawAttribue = json_encode($chartAttribue);
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-							<i class="ni ni-check-bold text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-check-circle-fill text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@ $rawAttribue = json_encode($chartAttribue);
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-							<i class="ni ni-pin-3 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-geo-alt-fill text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -169,7 +169,7 @@ $rawAttribue = json_encode($chartAttribue);
 					<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
 						<div class="d-flex align-items-center">
 							<div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-								<i class="ni ni-map-big text-white opacity-10"></i>
+								<i class="bi bi-map text-white opacity-10"></i>
 							</div>
 							<div class="d-flex flex-column">
 								<h6 class="mb-1 text-dark text-sm"><?= htmlspecialchars($regNom) ?></h6>
@@ -267,7 +267,7 @@ $rawAttribue = json_encode($chartAttribue);
 								<td>
 									<div class="d-flex px-2 py-1">
 										<div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center border-radius-md">
-											<i class="ni ni-building text-white opacity-10"></i>
+											<i class="bi bi-building text-white opacity-10"></i>
 										</div>
 										<div class="d-flex flex-column justify-content-center">
 											<h6 class="mb-0 text-sm"><?= htmlspecialchars((string)$r['ville']) ?></h6>

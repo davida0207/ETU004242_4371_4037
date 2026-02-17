@@ -63,11 +63,16 @@ $app->set('csp_nonce', $nonce);
  **********************************************/
 return [
 	'database' => [
-	'host' => '127.0.0.1',
-	'dbname' => 'BNGRC',
-	'user' => 'root',
-	'password' => ''
-]
+		'host' => '127.0.0.1',
+		'dbname' => 'BNGRC',
+		'user' => 'root',
+		'password' => ''
+	],
+	'bngrc' => [
+		// Pourcentage de frais d'achat appliqué aux achats via dons en argent
+		// Exemple: 10 = 10% de frais (achat de 100 => coût 110)
+		'purchase_fee_percent' => 10.0,
+	]
 	// Google OAuth Credentials
 	// 'google_oauth' => [
 	//     'client_id'     => 'your_client_id',     // Google API client ID

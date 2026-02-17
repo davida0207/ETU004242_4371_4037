@@ -71,3 +71,20 @@ CREATE TABLE IF NOT EXISTS bngrc_allocations (
   FOREIGN KEY (don_id) REFERENCES bngrc_dons(id),
   FOREIGN KEY (besoin_id) REFERENCES bngrc_besoins(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS bngrc_achats (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  besoin_id INT NULL,
+  ville_id INT NOT NULL,
+  article_id INT NOT NULL,
+  quantite DECIMAL(15,2) NOT NULL,
+  montant_base DECIMAL(15,2) NOT NULL,
+  frais_percent DECIMAL(5,2) NOT NULL,
+  montant_total DECIMAL(15,2) NOT NULL,
+  date_achat DATE NOT NULL,
+  note VARCHAR(500) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (besoin_id) REFERENCES bngrc_besoins(id),
+  FOREIGN KEY (ville_id) REFERENCES bngrc_villes(id),
+  FOREIGN KEY (article_id) REFERENCES bngrc_articles(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

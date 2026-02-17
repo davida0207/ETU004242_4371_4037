@@ -7,8 +7,8 @@ $flash = $flash ?? '';
 $runs  = $runs ?? [];
 
 $flashMap = [
-	'deleted' => ['success', 'Run et allocations supprimés.', 'ni ni-check-bold'],
-	'error'   => ['danger',  'Erreur lors de la suppression.', 'ni ni-fat-remove'],
+	'deleted' => ['success', 'Run et allocations supprimés.', 'bi bi-check-circle-fill'],
+	'error'   => ['danger',  'Erreur lors de la suppression.', 'bi bi-x-circle-fill'],
 ];
 
 function fmtQtyD(float $v): string {

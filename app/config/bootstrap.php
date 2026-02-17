@@ -40,6 +40,9 @@ require_once(__DIR__ . $ds . '..' . $ds . 'controllers' . $ds . 'UserApiControll
  */
 $config = require('config.php');
 
+// Make config accessible via Flight::get('config')
+$app->set('config', $config);
+
 /*
  * Load the services file.
  * A "service" is basically something special that you want to use in your app.

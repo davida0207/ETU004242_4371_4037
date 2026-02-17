@@ -1,0 +1,33 @@
+=> integration du bootstrap dans MVC
+    *ajustement des pages bootstrap
+        -page Dashboard(avec js)
+        -page messages (avec js)
+    
+    *Ajustement et configuration js et style
+        -include des js dans assets dans fichier public
+        -faire chemin vers assets
+        -construction header.php et son footer.php
+        -
+
+
+
+
+
+
+
+integre cette fonctionalite : Fonctionnement
+23-examen-final-S3-fev-26-v2.md 2026-02-16
+2 / 2
+On peut acheter via les dons en argent les besoins en nature et en matériaux selon les prix unitaires
+dits ci-dessus (saisie et liste des achats filtrables par ville à faire). Il y a un frais d'achat de x%
+configurable. (ex: achat de 100 avec 10%, donc achat de 110). On utilise la page des besoins restants
+pour faire les achats. Il y a un message d'erreur si l'achat existe encore dans les dons restants.
+Page de simulation : il y a un bouton simuler qui permet de voir le résulat et un bouton validation qui
+dispatch vraiment les dons
+Créer une page de récapitulation (avec un bouton actualiser en Ajax) qui affiche :
+les besoins totaux et satisfaits en montant et le montant des besoins restants.
+
+ celle du fichier de ETU004242_4371_4037 vers le fichier ETU004242_4371_4037_git 
+ La fonctionnalite du  fichier ETU004242_4371_4037 est deja marcher et je veux juste l'integrer dans le ETU004242_4371_4037_git
+
+    

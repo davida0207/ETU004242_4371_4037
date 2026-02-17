@@ -13,7 +13,7 @@ $filters = $filters ?? ['categorie' => null];
 
 <?php if ($flash && isset($flashMap[$flash])): ?>
 	<div class="alert alert-success alert-dismissible fade show text-white" role="alert">
-		<span class="alert-icon"><i class="ni ni-check-bold"></i></span>
+		<span class="alert-icon"><i class="bi bi-check-circle-fill"></i></span>
 		<span class="alert-text"><?= htmlspecialchars($flashMap[$flash][1]) ?></span>
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
 			<span aria-hidden="true">&times;</span>

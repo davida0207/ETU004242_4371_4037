@@ -56,7 +56,7 @@ $progressColor = $pctAttribue >= 100 ? 'bg-success' : ($pctAttribue >= 50 ? 'bg-
 <!-- En-tête -->
 <div class="d-flex justify-content-between align-items-center mb-4">
 	<div>
-		<h5 class="text-white mb-1"><i class="ni ni-basket me-2"></i>Don #<?= (int)$don['id'] ?></h5>
+		<h5 class="text-white mb-1"><i class="bi bi-basket3 me-2"></i>Don #<?= (int)$don['id'] ?></h5>
 		<p class="text-white text-sm opacity-8 mb-0"><?= htmlspecialchars((string)$don['libelle']) ?> — <span class="badge badge-sm <?= $statutBadge ?>"><i class="<?= $statutIcon ?> me-1"></i><?= $statut ?></span></p>
 	</div>
 	<a class="btn btn-sm btn-white mb-0" href="/dons"><i class="fas fa-arrow-left me-1"></i> Retour à la liste</a>
@@ -169,7 +169,7 @@ $progressColor = $pctAttribue >= 100 ? 'bg-success' : ($pctAttribue >= 50 ? 'bg-
 	<div class="card-body px-0 pt-0 pb-2">
 		<?php if (empty($allocations)): ?>
 			<div class="text-center py-4">
-				<i class="ni ni-bullet-list-67 text-secondary" style="font-size:2rem;"></i>
+				<i class="bi bi-list-ul text-secondary" style="font-size:2rem;"></i>
 				<p class="text-sm text-secondary mt-2 mb-0">Ce don n'a pas encore été attribué.</p>
 			</div>
 		<?php else: ?>
@@ -190,7 +190,7 @@ $progressColor = $pctAttribue >= 100 ? 'bg-success' : ($pctAttribue >= 50 ? 'bg-
 						<td>
 							<div class="d-flex px-2 py-1">
 								<div class="icon icon-shape icon-sm me-2 bg-gradient-dark shadow text-center rounded-circle">
-									<i class="ni ni-building text-white text-xs" aria-hidden="true"></i>
+									<i class="bi bi-building text-white text-xs" aria-hidden="true"></i>
 								</div>
 								<div class="d-flex flex-column justify-content-center">
 									<h6 class="mb-0 text-sm"><?= htmlspecialchars((string)$al['ville']) ?></h6>

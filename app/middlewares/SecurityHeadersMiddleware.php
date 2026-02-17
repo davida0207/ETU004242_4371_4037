@@ -35,7 +35,7 @@ class SecurityHeadersMiddleware
 			. "object-src 'none'; "
 			. "script-src 'self' 'nonce-{$nonce}'{$devEvalBypass}; "
 			. "style-src 'self'{$tracyCssBypass} https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
-			. "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
+			. "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; "
 			. "img-src 'self' data:;";
 		$this->app->response()->header('X-Frame-Options', 'SAMEORIGIN');
 		$this->app->response()->header("Content-Security-Policy", $csp);

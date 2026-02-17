@@ -50,6 +50,12 @@ class ArticleController
 		$prix = (string)($req->data->prix_unitaire ?? '0');
 		$actif = (string)($req->data->actif ?? '1');
 
+		/* Règle métier : catégorie « argent » → unité fixe Ar, prix fixe 1 */
+		if ($categorie === 'argent') {
+			$unite = 'Ar';
+			$prix  = '1';
+		}
+
 		$errors = ['categorie' => '', 'libelle' => '', 'unite' => '', 'prix_unitaire' => ''];
 		if (!array_key_exists($categorie, $this->categorieOptions())) {
 			$errors['categorie'] = 'Catégorie invalide.';
@@ -126,6 +132,12 @@ class ArticleController
 		$unite = (string)($req->data->unite ?? '');
 		$prix = (string)($req->data->prix_unitaire ?? '0');
 		$actif = (string)($req->data->actif ?? '1');
+
+		/* Règle métier : catégorie « argent » → unité fixe Ar, prix fixe 1 */
+		if ($categorie === 'argent') {
+			$unite = 'Ar';
+			$prix  = '1';
+		}
 
 		$errors = ['categorie' => '', 'libelle' => '', 'unite' => '', 'prix_unitaire' => ''];
 		if (!array_key_exists($categorie, $this->categorieOptions())) {

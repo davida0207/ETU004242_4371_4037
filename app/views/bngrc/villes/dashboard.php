@@ -58,7 +58,7 @@ $barColor = $pctCouverture >= 75 ? 'bg-success' : ($pctCouverture >= 40 ? 'bg-wa
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-							<i class="ni ni-bullet-list-67 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-list-ul text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -115,7 +115,7 @@ $barColor = $pctCouverture >= 75 ? 'bg-success' : ($pctCouverture >= 40 ? 'bg-wa
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
-							<i class="ni ni-box-2 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-box-seam text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -129,7 +129,7 @@ $barColor = $pctCouverture >= 75 ? 'bg-success' : ($pctCouverture >= 40 ? 'bg-wa
 	<div class="col-lg-4">
 		<div class="card h-100">
 			<div class="card-header pb-0">
-				<h6 class="mb-0"><i class="ni ni-building me-2 text-warning"></i> Ville</h6>
+				<h6 class="mb-0"><i class="bi bi-building me-2 text-warning"></i> Ville</h6>
 			</div>
 			<div class="card-body">
 				<p class="text-sm mb-2"><strong>Nom :</strong> <?= htmlspecialchars($ville['nom']) ?></p>
@@ -166,7 +166,7 @@ $barColor = $pctCouverture >= 75 ? 'bg-success' : ($pctCouverture >= 40 ? 'bg-wa
 	<div class="col-12">
 		<div class="card">
 			<div class="card-header pb-0">
-				<h6 class="mb-0"><i class="ni ni-bullet-list-67 me-2 text-danger"></i> Besoins de la ville (<?= count($besoins) ?>)</h6>
+				<h6 class="mb-0"><i class="bi bi-list-ul me-2 text-danger"></i> Besoins de la ville (<?= count($besoins) ?>)</h6>
 			</div>
 			<div class="card-body px-0 pt-0 pb-2">
 				<?php if (empty($besoins)): ?>

@@ -18,9 +18,8 @@ $currentPage = trim($uri, '/');
 	<!-- Polices -->
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 
-	<!-- Icônes Nucleo -->
-	<link href="/assets/argon/css/nucleo-icons.css" rel="stylesheet" />
-	<link href="/assets/argon/css/nucleo-svg.css" rel="stylesheet" />
+	<!-- Bootstrap Icons (CDN) -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<!-- Font Awesome 6 (CDN public) -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -56,7 +55,7 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 				<a class="nav-link <?= ($currentPage === 'bngrc/dashboard' || $currentPage === '') ? 'active' : '' ?>" href="/bngrc/dashboard">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+							<i class="bi bi-speedometer2 text-primary text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Dashboard</span>
 					</a>
@@ -69,7 +68,7 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 					<a class="nav-link <?= str_starts_with($currentPage, 'besoins') ? 'active' : '' ?>" href="/besoins">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-bullet-list-67 text-danger text-sm opacity-10"></i>
+							<i class="bi bi-list-ul text-danger text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Besoins</span>
 					</a>
@@ -77,9 +76,17 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 					<a class="nav-link <?= str_starts_with($currentPage, 'dons') ? 'active' : '' ?>" href="/dons">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-basket text-success text-sm opacity-10"></i>
+							<i class="bi bi-basket3 text-success text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Dons</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link <?= str_starts_with($currentPage, 'achats') ? 'active' : '' ?>" href="/achats">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							<i class="bi bi-cart-check text-warning text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Achats</span>
 					</a>
 				</li>
 				<li class="nav-item">
@@ -90,6 +97,14 @@ $currentPage = trim($uri, '/');
 						<span class="nav-link-text ms-1">Dispatch</span>
 					</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link <?= str_starts_with($currentPage, 'recap') ? 'active' : '' ?>" href="/recap">
+						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+							<i class="bi bi-file-earmark-bar-graph text-info text-sm opacity-10"></i>
+						</div>
+						<span class="nav-link-text ms-1">Récap</span>
+					</a>
+				</li>
 
 				<!-- Section référentiel -->
 				<li class="nav-item mt-3">
@@ -98,7 +113,7 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 					<a class="nav-link <?= str_starts_with($currentPage, 'regions') ? 'active' : '' ?>" href="/regions">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-map-big text-info text-sm opacity-10"></i>
+							<i class="bi bi-map text-info text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Régions</span>
 					</a>
@@ -106,7 +121,7 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 					<a class="nav-link <?= str_starts_with($currentPage, 'villes') ? 'active' : '' ?>" href="/villes">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-building text-warning text-sm opacity-10"></i>
+							<i class="bi bi-building text-warning text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Villes</span>
 					</a>
@@ -114,7 +129,7 @@ $currentPage = trim($uri, '/');
 				<li class="nav-item">
 					<a class="nav-link <?= str_starts_with($currentPage, 'articles') ? 'active' : '' ?>" href="/articles">
 						<div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-							<i class="ni ni-box-2 text-dark text-sm opacity-10"></i>
+							<i class="bi bi-box-seam text-dark text-sm opacity-10"></i>
 						</div>
 						<span class="nav-link-text ms-1">Articles</span>
 					</a>

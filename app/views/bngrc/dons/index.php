@@ -12,9 +12,9 @@ function fmtQty(float $v): string {
 $nonce      = \Flight::get('csp_nonce');
 $flash      = $flash ?? '';
 $flashMap   = [
-	'created' => ['success', 'Don enregistré avec succès.', 'ni ni-check-bold'],
-	'deleted' => ['success', 'Don supprimé.', 'ni ni-check-bold'],
-	'blocked' => ['warning', 'Modification/suppression impossible : des allocations existent pour ce don.', 'ni ni-bell-55'],
+	'created' => ['success', 'Don enregistré avec succès.', 'bi bi-check-circle-fill'],
+	'deleted' => ['success', 'Don supprimé.', 'bi bi-check-circle-fill'],
+	'blocked' => ['warning', 'Modification/suppression impossible : des allocations existent pour ce don.', 'bi bi-bell-fill'],
 ];
 $filters    = $filters ?? [];
 $rows       = $rows ?? [];
@@ -55,7 +55,7 @@ $totalReste = $totalDons - $totalAttribue;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-							<i class="ni ni-basket text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-basket3 text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -75,7 +75,7 @@ $totalReste = $totalDons - $totalAttribue;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
-							<i class="ni ni-send text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-send text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -94,7 +94,7 @@ $totalReste = $totalDons - $totalAttribue;
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-							<i class="ni ni-box-2 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-box-seam text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -107,7 +107,7 @@ $totalReste = $totalDons - $totalAttribue;
 <div class="card mb-4">
 	<div class="card-header pb-0">
 		<div class="d-flex justify-content-between align-items-center">
-			<h6 class="mb-0"><i class="ni ni-zoom-split-in text-sm me-1"></i> Filtres</h6>
+			<h6 class="mb-0"><i class="bi bi-funnel text-sm me-1"></i> Filtres</h6>
 			<a class="btn btn-sm bg-gradient-success mb-0" href="/dons/add"><i class="fas fa-plus me-1"></i> Ajouter un don</a>
 		</div>
 	</div>
@@ -159,7 +159,7 @@ $totalReste = $totalDons - $totalAttribue;
 	<div class="card-body px-0 pt-0 pb-2">
 		<?php if (empty($rows)): ?>
 			<div class="text-center py-5">
-				<i class="ni ni-basket text-secondary" style="font-size:3rem;"></i>
+				<i class="bi bi-basket3 text-secondary" style="font-size:3rem;"></i>
 				<p class="text-sm text-secondary mt-3">Aucun don trouvé.</p>
 				<a href="/dons/add" class="btn btn-sm bg-gradient-success">Enregistrer un premier don</a>
 			</div>
@@ -217,7 +217,7 @@ $totalReste = $totalDons - $totalAttribue;
 						<td>
 							<div class="d-flex px-2 py-1">
 								<div class="icon icon-shape icon-sm me-2 bg-gradient-success shadow text-center rounded-circle">
-									<i class="ni ni-basket text-white text-xs" aria-hidden="true"></i>
+									<i class="bi bi-basket3 text-white text-xs" aria-hidden="true"></i>
 								</div>
 								<div class="d-flex flex-column justify-content-center">
 									<h6 class="mb-0 text-sm"><?= htmlspecialchars((string)$d['libelle']) ?></h6>

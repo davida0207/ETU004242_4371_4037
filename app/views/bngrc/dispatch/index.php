@@ -8,10 +8,10 @@ $stats = $stats ?? ['dons_total' => 0, 'besoins_total' => 0, 'dons_restant' => 0
 $runs  = $runs ?? [];
 
 $flashMap = [
-	'created' => ['success', 'Dispatch exécuté avec succès !', 'ni ni-check-bold'],
-	'reset'   => ['info',    'Simulation réinitialisée — toutes les allocations ont été supprimées.', 'ni ni-bell-55'],
-	'empty'   => ['warning', 'Aucune allocation créée : aucun don ne correspond à un besoin ouvert.', 'ni ni-bell-55'],
-	'error'   => ['danger',  'Erreur lors du dispatch. Veuillez réessayer.', 'ni ni-fat-remove'],
+	'created' => ['success', 'Dispatch exécuté avec succès !', 'bi bi-check-circle-fill'],
+	'reset'   => ['info',    'Simulation réinitialisée — toutes les allocations ont été supprimées.', 'bi bi-bell-fill'],
+	'empty'   => ['warning', 'Aucune allocation créée : aucun don ne correspond à un besoin ouvert.', 'bi bi-bell-fill'],
+	'error'   => ['danger',  'Erreur lors du dispatch. Veuillez réessayer.', 'bi bi-x-circle-fill'],
 ];
 ?>
 
@@ -38,7 +38,7 @@ $flashMap = [
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
-							<i class="ni ni-basket text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-basket3 text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -57,7 +57,7 @@ $flashMap = [
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
-							<i class="ni ni-delivery-fast text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-truck text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -76,7 +76,7 @@ $flashMap = [
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
-							<i class="ni ni-bullet-list-67 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-list-ul text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>
@@ -95,7 +95,7 @@ $flashMap = [
 					</div>
 					<div class="col-4 text-end">
 						<div class="icon icon-shape bg-gradient-info shadow-info text-center rounded-circle">
-							<i class="ni ni-chart-bar-32 text-lg opacity-10" aria-hidden="true"></i>
+							<i class="bi bi-bar-chart-fill text-lg opacity-10" aria-hidden="true"></i>
 						</div>
 					</div>
 				</div>

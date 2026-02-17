@@ -8,7 +8,7 @@ $run = $run ?? [];
 $allocations = $allocations ?? [];
 
 $flashMap = [
-	'created' => ['success', 'Dispatch exécuté avec succès ! Voici les allocations créées.', 'ni ni-check-bold'],
+	'created' => ['success', 'Dispatch exécuté avec succès ! Voici les allocations créées.', 'bi bi-check-circle-fill'],
 ];
 
 function fmtQtyRd(float $v): string {
